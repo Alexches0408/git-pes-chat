@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
         name: 'gitChat',
         initialState: {
             chatHistory: [],
-            chatCurrent:[{from:'bot', text:'Привет! Я - ГитПес, Ваш цифровой ассистент и антибаг агент! Ваш запрос - мой git commit!'}],
+            chatCurrent:[],
             isOpen: true,
             sidebarOpen: true,
             darkMode: false,

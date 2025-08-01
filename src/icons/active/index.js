@@ -1,0 +1,1 @@
+export { default as AciveIconDefault} from './Default';

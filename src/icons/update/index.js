@@ -1,0 +1,1 @@
+export { default as UpdateIcon} from './UpdateIcon';

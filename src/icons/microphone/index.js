@@ -1,0 +1,1 @@
+export { default as MicrophoneIconDefault} from './Default';

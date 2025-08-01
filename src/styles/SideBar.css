@@ -1,3 +1,12 @@
+.AG16med {
+  font-family: 'Inter';
+  font-weight: 500;       /* Regular */
+  font-size: 16px;
+  line-height: 20px;      /* можно указать и в px */
+}
+
+
+
 #Sidebar-Window,
 #Sidebar-Window-Close {
     background-color: #D7DDE3;
@@ -9,8 +18,40 @@
     display: flex;  
     align-items: center;
     justify-content: space-between;
-    padding-bottom: 10px;
+    padding: 4px 0px 16px 12px; 
     margin-bottom: 15px;
     border-bottom: 1px solid #B0B8C1;
   }
   
+
+  .new-chat-button {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    width: 150px;
+    color: #708AB9;
+    border: #708AB9 solid 1px;
+    background: "none";
+    padding: 8px 12px;
+    margin: 0;
+    outline: "none";
+    cursor: "pointer";
+  }
+
+  .new-chat-button:focus {
+    outline: none;
+  }
+
+  .new-chat-button span {
+    margin-left: 8px;
+  }
+
+  .sb-menu-head {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    color: #363B49;
+    cursor: pointer;
+  }

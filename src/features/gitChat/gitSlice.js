@@ -41,11 +41,22 @@ import { createSlice } from '@reduxjs/toolkit'
                 if (selectedChat) {
                     state.chatCurrent = [...selectedChat.messages];
                 }
+            },
+            deleteChat: (state, action) => {
+                const index = action.payload;
+                if (state.currentChatIndex === index) {
+                    state.currentChatIndex = null;
+                    state.chatCurrent = [];
+                } else if (state.currentChatIndex > index) {
+                    state.currentChatIndex -=1;
+                }
+
+                state.chatHistory.splice(index,1);
             }
         },
     });
 
 
-export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory } = gitChatSlice.actions
+export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory, deleteChat } = gitChatSlice.actions
 
 export default gitChatSlice.reducer

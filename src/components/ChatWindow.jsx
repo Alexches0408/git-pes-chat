@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Moon, Sun, Menu, X } from "lucide-react";
 import { motion } from "framer-motion";
 import SideBarOpen from "./SideBarOpen";
 import SideBarClose from "./SideBarClose";
@@ -18,6 +17,7 @@ const ChatWindow = () => {
   const sideBarIsOpen = useSelector((state) => state.gitChat.sidebarOpen)
   const dispatch = useDispatch()
   const [searchQuery, setSearchQuery] = useState("");
+
 
   
     // highlight the search text  

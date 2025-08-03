@@ -1,7 +1,8 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar } from '@/features/gitChat/gitSlice'
-import { commitChat, loadChatHistory } from "../features/gitChat/gitSlice";
+import { commitChat, loadChatHistory, deleteChat } from "../features/gitChat/gitSlice";
+import SidebarContextMenu from "./SideBarContextMenu";
 import '../styles/Sidebar.css';
 
 import {SidebarIconOpen} from '../icons'
@@ -13,6 +14,8 @@ export default function SideBarOpen() {
 
     const [isOpenHistory, setisOpenHistory] = useState(false);
     const [isOpenBookmarks, setisOpenBookmarks] = useState(false);
+    const [popupIndex, setPopupIndex] = useState(null);
+    const [popupPosition, setPopupPosition] = useState({top:0, left:0})
 
     const toggleHistoryChat = () => {
         setisOpenHistory(!isOpenHistory);
@@ -60,27 +63,49 @@ export default function SideBarOpen() {
                 <span className='ml-[10px]'>История</span>
             </div>
             {isOpenHistory && (
-                <div className="list-sb-menu">
+                <div className="list-sb-menu relative">
                 {chatHistory.map((msg, i) => (
-                <button
-                    key={i}
-                    onClick={() => dispatch(loadChatHistory(i))}
-                    className={`list-sb-menu-item AG16reg ${currentChatIndex===i ? 'activeChat':''}`}
-                    style={{  
-                        background: "none",
-                        border: "none",
-                        width: "100%",
-                        // margin: 0,
-                        outline: "none",
-                        cursor: "pointer",
-                        }}
-                >
-                    {(msg.title?.slice(0, 15) || 'Без названия')}
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 10.5C6.82843 10.5 7.5 11.1716 7.5 12C7.5 12.8284 6.82843 13.5 6 13.5C5.17157 13.5 4.5 12.8284 4.5 12C4.5 11.1716 5.17157 10.5 6 10.5ZM18 10.5C18.8284 10.5 19.5 11.1716 19.5 12C19.5 12.8284 18.8284 13.5 18 13.5C17.1716 13.5 16.5 12.8284 16.5 12C16.5 11.1716 17.1716 10.5 18 10.5ZM12 10.5C12.8284 10.5 13.5 11.1716 13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5Z" fill="#363B49"/>
-                    </svg>
-                </button>
+                    <div 
+                        key={i}
+                        className={`list-sb-menu-item AG16reg ${currentChatIndex===i ? 'activeChat':''}`}
+                    >
+                        <button
+                            onClick={() => dispatch(loadChatHistory(i))}
+                            className={`AG16reg`}
+                            style={{  
+                                background: "none",
+                                margin:0,
+                                padding:0,
+                                border: "none",
+                                width: "100%",
+                                outline: "none",
+                                cursor: "pointer",
+                                }}
+                        >
+                            {(msg.title?.slice(0, 15) || 'Без названия')}
+                        </button>
+                        <div
+                            onClick={(e)=>{
+                                e.stopPropagation();
+                                const rect = e.currentTarget.getBoundingClientRect();
+                                setPopupIndex(i);
+                                setPopupPosition({top:rect.bottom + 4, left:rect.left});
+                            }}
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6 10.5C6.82843 10.5 7.5 11.1716 7.5 12C7.5 12.8284 6.82843 13.5 6 13.5C5.17157 13.5 4.5 12.8284 4.5 12C4.5 11.1716 5.17157 10.5 6 10.5ZM18 10.5C18.8284 10.5 19.5 11.1716 19.5 12C19.5 12.8284 18.8284 13.5 18 13.5C17.1716 13.5 16.5 12.8284 16.5 12C16.5 11.1716 17.1716 10.5 18 10.5ZM12 10.5C12.8284 10.5 13.5 11.1716 13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5Z" fill="#363B49"/>
+                            </svg>
+                        </div>
+                    </div>
                 ))}
+                {popupIndex !==null && (
+                    <SidebarContextMenu 
+                        position={popupPosition}
+                        onClose={()=>setPopupIndex(null)}
+                        onEdit={()=>console.log("Редактировать", popupIndex)}
+                        onDelete={()=>dispatch(deleteChat(popupIndex))}
+                    />
+                )}
             </div>
             )}
             

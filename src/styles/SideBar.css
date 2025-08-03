@@ -12,7 +12,13 @@
   line-height: 150%;      
 }
 
-
+.AGtext {
+  font-family: 'Inter';
+  font-weight: 200;       /* Regular */
+  font-size: 16px;
+  line-height: 24px;      /* можно указать и в px */
+  color: #363B49;
+}
 
 #Sidebar-Window,
 #Sidebar-Window-Close {
@@ -72,8 +78,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: 12px;
     padding: 8px 12px;
     cursor: pointer;
+  }
+
+  .list-sb-menu-item button {
+    color: #363B49;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .list-sb-menu-item div {
+    display: flex;
+    justify-content: right;
+    align-items: center;
   }
 
   .list-sb-menu-item:hover {
@@ -88,3 +108,36 @@
     background-color: #DFE3E6 !important;
   }
   
+  #all-background-for-sb-popup {
+    position: fixed;
+    inset: 0;
+    background-color: black;
+    opacity: 0.25;
+    z-index: 1500;
+  }
+
+  .sidebar-popup {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 186px;
+    height: 126px;
+    z-index: 2000;
+    padding: 10px;
+    gap: 4px;
+    background-color: #FFF;
+    border: #EAEEF1 solid 1px;
+    border-radius: 12px;
+  }
+
+  .context-menu-item {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 4px 8px;
+  }
+
+  .context-menu-item:hover {
+    background-color: #E3E9EE !important;
+  }

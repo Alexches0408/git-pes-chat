@@ -1,15 +1,22 @@
 .AG16med {
   font-family: 'Inter';
-  font-weight: 500;       /* Regular */
+  font-weight: 500;       
   font-size: 16px;
-  line-height: 20px;      /* можно указать и в px */
+  line-height: 20px;      
+}
+
+.AG16reg {
+  font-family: 'Inter';
+  font-weight: 400;      
+  font-size: 16px;
+  line-height: 150%;      
 }
 
 
 
 #Sidebar-Window,
 #Sidebar-Window-Close {
-    background-color: #D7DDE3;
+    background-color: #F0F3F5;
     padding: 20px 16px;
     height: 720px;
   }
@@ -55,3 +62,29 @@
     color: #363B49;
     cursor: pointer;
   }
+
+  .list-sb-menu{
+    padding: 0;
+  }
+
+  .list-sb-menu-item {
+    color: #363B49;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+
+  .list-sb-menu-item:hover {
+    background-color: #E3E9EE !important;
+  }
+
+  .list-sb-menu-item:active {
+    background-color: #DFE3E6 !important;
+  }
+
+  .list-sb-menu-item.activeChat {
+    background-color: #DFE3E6 !important;
+  }
+  

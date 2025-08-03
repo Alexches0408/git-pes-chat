@@ -5,7 +5,7 @@ import SideBarOpen from "./SideBarOpen";
 import SideBarClose from "./SideBarClose";
 import InputMessageForm from "./inputMessage";
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleChat, addMessage } from "../features/gitChat/gitSlice";
+import { toggleChat } from "../features/gitChat/gitSlice";
 import '../styles/ChatWindow.css';
 import logo from "../assets/icons/logo.png";
 

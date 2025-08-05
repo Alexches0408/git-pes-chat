@@ -4,6 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
         initialState: {
             chatHistory: [],
             chatCurrent:[],
+            favoritesByChatId:{},
             currentChatIndex: null,
     
             isOpen: true,
@@ -34,13 +35,20 @@ import { createSlice } from '@reduxjs/toolkit'
                     state.chatCurrent=[];
                 }
             }, 
+            renameChat: (state, action) => {
+                const {chatId, newName} = action.payload;
+                if (state.chatHistory[chatId]) {
+                    state.chatHistory[chatId].title = newName;
+                }
+                          
+            },
             loadChatHistory: (state, action) => {
                 state.currentChatIndex = action.payload;
                 const chatIndex = action.payload;
                 const selectedChat = state.chatHistory[chatIndex];
                 if (selectedChat) {
                     state.chatCurrent = [...selectedChat.messages];
-                }
+                }   
             },
             deleteChat: (state, action) => {
                 const index = action.payload;
@@ -52,11 +60,18 @@ import { createSlice } from '@reduxjs/toolkit'
                 }
 
                 state.chatHistory.splice(index,1);
+            },
+            toggleFavoriteMessage: (state, action) => {
+                const {chatId, messageId} = action.payload;
+                const favs = state.favoritesByChatId[chatId] || [];
+                state.favoritesByChatId[chatId] = favs.includes(messageId)
+                    ? favs.filter((id)=> id !== messageId)
+                    : [...favs,messageId]
             }
         },
     });
 
 
-export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory, deleteChat } = gitChatSlice.actions
+export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory, deleteChat, toggleFavoriteMessage, renameChat } = gitChatSlice.actions
 
 export default gitChatSlice.reducer

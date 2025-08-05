@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar } from '@/features/gitChat/gitSlice'
-import { commitChat, loadChatHistory, deleteChat } from "../features/gitChat/gitSlice";
+import { commitChat, loadChatHistory, deleteChat, renameChat } from "../features/gitChat/gitSlice";
 import SidebarContextMenu from "./SideBarContextMenu";
 import '../styles/Sidebar.css';
 
@@ -15,7 +15,9 @@ export default function SideBarOpen() {
     const [isOpenHistory, setisOpenHistory] = useState(false);
     const [isOpenBookmarks, setisOpenBookmarks] = useState(false);
     const [popupIndex, setPopupIndex] = useState(null);
-    const [popupPosition, setPopupPosition] = useState({top:0, left:0})
+    const [popupPosition, setPopupPosition] = useState({top:0, left:0});
+    const [editingChatIndex, setEditingChatIndex] = useState(null);
+    const [editingChatName, setEditingChatName] = useState();
 
     const toggleHistoryChat = () => {
         setisOpenHistory(!isOpenHistory);
@@ -24,6 +26,12 @@ export default function SideBarOpen() {
     const toggleBookmarks = () => {
         setisOpenBookmarks(!isOpenBookmarks);
     }
+
+    const handleChatRename = () => {
+        dispatch(renameChat({chatId: editingChatIndex, newName:editingChatName}));
+        setEditingChatIndex(null);
+    }
+
 
     return (
         <div
@@ -69,21 +77,45 @@ export default function SideBarOpen() {
                         key={i}
                         className={`list-sb-menu-item AG16reg ${currentChatIndex===i ? 'activeChat':''}`}
                     >
-                        <button
-                            onClick={() => dispatch(loadChatHistory(i))}
-                            className={`AG16reg`}
-                            style={{  
-                                background: "none",
-                                margin:0,
-                                padding:0,
-                                border: "none",
-                                width: "100%",
-                                outline: "none",
-                                cursor: "pointer",
+                        {editingChatIndex === i ? (
+                            <input
+                                autoFocus
+                                className={`AG16reg`}
+                                value={editingChatName}
+                                onChange={(e) => setEditingChatName(e.target.value)}
+                                onBlur={handleChatRename}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') handleChatRename();
                                 }}
-                        >
-                            {(msg.title?.slice(0, 15) || 'Без названия')}
-                        </button>
+                                style={{
+                                    width: '100%',
+                                    background: 'transparent',  
+                                    border: 'none',             
+                                    padding: 0,                
+                                    margin: 0,
+                                    color: 'inherit',           
+                                    font: 'inherit',           
+                                    outline: 'none'            
+                                }}
+                            />
+                        ) : (
+                            <button
+                                onClick={() => dispatch(loadChatHistory(i))}
+                                className={`AG16reg`}
+                                style={{  
+                                    background: "none",
+                                    margin:0,
+                                    padding:0,
+                                    border: "none",
+                                    width: "100%",
+                                    outline: "none",
+                                    cursor: "pointer",
+                                    }}
+                            >
+                                {(msg.title?.slice(0, 15) || 'Без названия')}
+                            </button>
+                        )}
+                            
                         <div
                             onClick={(e)=>{
                                 e.stopPropagation();
@@ -102,7 +134,11 @@ export default function SideBarOpen() {
                     <SidebarContextMenu 
                         position={popupPosition}
                         onClose={()=>setPopupIndex(null)}
-                        onEdit={()=>console.log("Редактировать", popupIndex)}
+                        onEdit={()=> {
+                            setEditingChatIndex(popupIndex);
+                            setEditingChatName(chatHistory[popupIndex].title || '');
+                            setPopupIndex(null);
+                        }}
                         onDelete={()=>dispatch(deleteChat(popupIndex))}
                     />
                 )}

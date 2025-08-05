@@ -6,6 +6,7 @@ import { createSlice } from '@reduxjs/toolkit'
             chatCurrent:[],
             favoritesByChatId:{},
             currentChatIndex: null,
+
     
             isOpen: true,
             sidebarOpen: true,

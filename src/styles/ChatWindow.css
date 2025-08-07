@@ -214,6 +214,20 @@
   resize: none;
 }
 
+#chat-input textarea::-webkit-scrollbar {
+  width: 2px;
+}
+
+#chat-input textarea::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#chat-input textarea::-webkit-scrollbar-thumb {
+  background-color: #D0D9DF;
+  border-radius: 2px;
+}
+
+
 #chat-input textarea:focus {
   outline: none;
 }

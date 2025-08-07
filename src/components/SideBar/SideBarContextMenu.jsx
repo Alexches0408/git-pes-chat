@@ -1,6 +1,6 @@
 import { useRef, useEffect } from "react";
 import { createPortal } from 'react-dom';
-import '../styles/Sidebar.css';
+import '@/styles/Sidebar.css';
 
 export default function SidebarContextMenu({onClose, onShare, onEdit,onDelete, position={top:0, left:0}}){
     const ref = useRef();

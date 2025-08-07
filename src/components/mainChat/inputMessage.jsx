@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { addMessage } from "../features/gitChat/gitSlice";
-import '../styles/Sidebar.css';
+import { addMessage } from "../../features/gitChat/gitSlice";
+import '@/styles/Sidebar.css';
 
-import {MicrophoneIconDefault, InputIcon} from '../icons'
+import {MicrophoneIconDefault, InputIcon} from '@/icons'
 
 
 

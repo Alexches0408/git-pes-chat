@@ -1,11 +1,11 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { toggleSidebar } from '@/features/gitChat/gitSlice'
-import { commitChat, loadChatHistory, deleteChat, renameChat, toggleTheme } from "../features/gitChat/gitSlice";
-import SidebarContextMenu from "./SideBarContextMenu";
-import '../styles/Sidebar.css';
+import { toggleSidebar, toggleGitCoine, toggleProfile  } from '@/features/gitChat/gitSlice'
+import { commitChat, loadChatHistory, deleteChat, renameChat, toggleTheme } from "../../features/gitChat/gitSlice";
+import SidebarContextMenu from "@/components/SideBar/SideBarContextMenu";
+import '@/styles/Sidebar.css';
 
-import {SidebarIconOpen, GitCoinIconDefault, ProfileIconDefault} from '../icons'
+import {SidebarIconOpen, GitCoinIconDefault, ProfileIconDefault} from '../../icons'
 
 export default function SideBarOpen() {
     const chatHistory = useSelector((state) => state.gitChat.chatHistory)
@@ -160,6 +160,10 @@ export default function SideBarOpen() {
                 id="sb-footer"
             >
                 <button
+                    onClick={()=>{
+                        dispatch(toggleGitCoine(true))
+                        dispatch(toggleProfile(false))
+                    }}
                     className='sb-menu-head AG16med'
                     style={{  
                         background: "none",
@@ -172,6 +176,10 @@ export default function SideBarOpen() {
                     <span>GitCoin</span>
                 </button>
                 <button
+                    onClick={()=>{
+                        dispatch(toggleProfile(true))
+                        dispatch(toggleGitCoine(false))
+                    }}
                     className='sb-menu-head AG16med'
                     style={{  
                         background: "none",

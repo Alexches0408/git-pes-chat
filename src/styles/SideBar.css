@@ -81,6 +81,19 @@
     overflow-y: auto;
   }
 
+  #sb-main::-webkit-scrollbar {
+    width: 2px;
+  }
+  
+  #sb-main::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  #sb-main::-webkit-scrollbar-thumb {
+    background-color: #D0D9DF;
+    border-radius: 2px;
+  }
+
   .list-sb-menu{
     padding: 0;
   }

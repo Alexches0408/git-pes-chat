@@ -11,6 +11,8 @@ import { createSlice } from '@reduxjs/toolkit'
             isOpen: true,
             sidebarOpen: true,
             darkMode: false,
+            profileMode:false,
+            gitCoinMode:false,
         },
         reducers: {
             addMessage: (state, action) => {
@@ -24,6 +26,12 @@ import { createSlice } from '@reduxjs/toolkit'
             },
             toggleSidebar: (state) => {
                 state.sidebarOpen = !state.sidebarOpen;
+            },
+            toggleProfile: (state,action) => {
+                state.profileMode = action.payload;
+            },
+            toggleGitCoine: (state, action) => {
+                state.gitCoinMode = action.payload;
             },
             commitChat: (state) => {
                 if (state.chatCurrent.length>0) {
@@ -68,11 +76,16 @@ import { createSlice } from '@reduxjs/toolkit'
                 state.favoritesByChatId[chatId] = favs.includes(messageId)
                     ? favs.filter((id)=> id !== messageId)
                     : [...favs,messageId]
+            },
+            editChatCurrentMessage: (state, action) => {
+                const {text, messageId} = action.payload;
+                state.chatCurrent[messageId].text = text;
+
             }
         },
     });
 
 
-export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory, deleteChat, toggleFavoriteMessage, renameChat } = gitChatSlice.actions
+export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory, deleteChat, toggleFavoriteMessage, renameChat, editChatCurrentMessage, toggleGitCoine, toggleProfile } = gitChatSlice.actions
 
 export default gitChatSlice.reducer

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar } from '@/features/gitChat/gitSlice'
-import '../styles/Sidebar.css';
+import '@/styles/Sidebar.css';
 
-import {SidebarIconClose} from '../icons'
+import {SidebarIconClose} from '@/icons'
 
 
 export default function SideBarOpen() {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Mascot3DBase from './Mascot3DBase';
+import Mascot3D2file from './Mascot3D2file'; // Импортируем Mascot3D2file
 import ChatWindow from './ChatWindow';
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleChat } from "../features/gitChat/gitSlice";

@@ -6,7 +6,7 @@ import * as THREE from 'three';
 export default function Mascot3D({ onClick, scale = 0.8 }) {
   const ref = useRef();
   const mixerRef = useRef(null);
-  const mascot = useFBX('/AnimWorkPensive.fbx');
+  const mascot = useFBX('/onefile/AnimNoddingWork.fbx');
   
   // Получаем камеру из контекста сцены
   const { camera } = useThree();

@@ -1,61 +1,93 @@
-import React, { useRef, useEffect } from 'react';
-import { useFBX } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import React, { useEffect, useRef, useCallback } from "react";
+import { useFrame } from "@react-three/fiber";
+import * as THREE from "three";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 
-export default function Mascot3D({ onClick, scale = 0.3 }) {
-  const groupRef = useRef();
-  const mixerRef = useRef(null);
-  
-  // Загружаем модель и анимацию
-  const mascot = useFBX('/mascot2.fbx');
-  const anim = useFBX('/mascot_anim.fbx');
+const loader = new FBXLoader();
+
+export default function Mascot3D() {
+  const modelRef = useRef();
+  const mixerRef = useRef();
+  const rigRef = useRef();
+  const isMounted = useRef(true);
+
+  const playAnimation = useCallback((path) => {
+    if (!rigRef.current || !mixerRef.current) return;
+
+    loader.load(
+      path,
+      (anim) => {
+        if (!isMounted.current) return;
+
+        const clip = anim.animations[0];
+        if (!clip) {
+          console.warn(`Анимация не найдена в файле: ${path}`);
+          return;
+        }
+
+        // Плавно затухаем все активные действия
+        mixerRef.current.stopAllAction(); // для полной остановки
+        // Вместо stopAllAction можно плавно затушевать активные:
+        mixerRef.current._actions.forEach((action) => action.fadeOut(0.3));
+
+        const action = mixerRef.current.clipAction(clip);
+        action.reset().fadeIn(0.3).play();
+      },
+      undefined,
+      (error) => console.error(`Ошибка загрузки анимации ${path}:`, error)
+    );
+  }, []);
 
   useEffect(() => {
-    if (!mascot || !anim) return;
-  
-    mascot.scale.set(scale, scale, scale);
-  
-    mascot.traverse((child) => {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
+    isMounted.current = true;
+
+    loader.load(
+      "/twofiles/models/Husky_Rig.fbx",
+      (rig) => {
+        if (!isMounted.current) return;
+
+        rig.scale.set(0.01, 0.01, 0.01);
+        rigRef.current = rig;
+        if (modelRef.current) modelRef.current.add(rig);
+
+        mixerRef.current = new THREE.AnimationMixer(rig);
+
+        playAnimation("/twofiles/animations/ANeutral.fbx");
+      },
+      undefined,
+      (error) => console.error("Ошибка загрузки модели:", error)
+    );
+
+    return () => {
+      isMounted.current = false;
+
+      if (mixerRef.current) {
+        mixerRef.current.stopAllAction();
+        if (rigRef.current) mixerRef.current.uncacheRoot(rigRef.current);
+        mixerRef.current = null;
       }
-      if (child.isSkinnedMesh && typeof child.bind === 'function') {
-        child.bind(child.skeleton, child.matrixWorld);
+      if (rigRef.current && modelRef.current) {
+        modelRef.current.remove(rigRef.current);
+        rigRef.current.traverse((obj) => {
+          if (obj.isMesh) {
+            obj.geometry.dispose();
+            if (Array.isArray(obj.material)) {
+              obj.material.forEach((mat) => mat.dispose());
+            } else {
+              obj.material.dispose();
+            }
+          }
+        });
+        rigRef.current = null;
       }
-    });
-  
-    if (anim.animations && anim.animations.length > 0) {
-      mixerRef.current = new THREE.AnimationMixer(mascot);
-  
-      // Важно: клонируем AnimationClip, чтобы избежать ошибок
-      const clip = THREE.AnimationClip.parse(JSON.parse(JSON.stringify(anim.animations[0])));
-  
-      const action = mixerRef.current.clipAction(clip);
-      action.reset().play();
-    }
-  }, [mascot, anim, scale]);
+    };
+  }, [playAnimation]);
 
   useFrame((_, delta) => {
-    const t = performance.now() / 1000;
-    const floatY = Math.sin(t * 2) * 0.1;
-  
-    if (groupRef.current) {
-      groupRef.current.position.y = floatY - 6;
-        groupRef.current.scale.set(scale, scale, scale);
-    }
-  
-    if (mixerRef.current) {
+    if (mixerRef.current && delta > 0) {
       mixerRef.current.update(delta);
     }
   });
 
-  if (!mascot || !anim) return null;
-
-  return (
-    <group ref={groupRef} onClick={onClick} style={{ cursor: 'pointer' }}>
-      <primitive object={mascot} />
-    </group>
-  );
+  return <group ref={modelRef} />;
 }

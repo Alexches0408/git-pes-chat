@@ -31,8 +31,74 @@
   line-height: 20px;
 }
 
-
 #gitcoine-window{
-  width: 500px;
-  padding: 30px 20px 0px 40px;
+  width: 440px;
+  padding: 60px;
+}
+
+#gitcoine-head {
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#gicoine-main {
+  overflow-y: auto;
+  width: 440px;
+  max-height: 600px;
+  padding-right: 40px;
+}
+
+#gicoine-main::-webkit-scrollbar {
+  width: 2px;
+}
+
+#gicoine-main::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#gicoine-main::-webkit-scrollbar-thumb {
+  background-color: #D0D9DF;
+  border-radius: 2px;
+}
+
+
+.gitcoine-item {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  padding: 20px 0;
+  border-bottom: 1px solid #E1E4E8;
+}
+
+.gitcoine-item-toprow {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  width: 440px;
+  margin-bottom: 10px;
+}
+
+.gitcoine-item-main {
+  display: flex;
+  text-align: left;
+  color: #707D8F;
+}
+
+#tokens-count {
+  font-family: 'Inter'; 
+  font-weight: 500;       
+  font-size: 24px; 
+  color: #708AB9;
+}
+ 
+.gitcoin-main-button {
+  padding: 4px 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #708AB9 !important;
+  border-radius: 12px;
+  color: #708AB9;
 }

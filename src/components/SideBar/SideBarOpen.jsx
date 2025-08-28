@@ -1,17 +1,19 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar, toggleGitCoine, toggleProfile  } from '@/features/gitChat/gitSlice'
-import { commitChat, loadChatHistory, deleteChat, renameChat, toggleTheme } from "../../features/gitChat/gitSlice";
+import { createNewChat, loadChat, deleteChat, renameChat, toggleTheme, setCurrentChatId, setList } from "../../features/gitChat/gitSlice";
 import SidebarContextMenu from "@/components/SideBar/SideBarContextMenu";
 import '@/styles/Sidebar.css';
 
 import {SidebarIconOpen, GitCoinIconDefault, ProfileIconDefault} from '../../icons'
 
 export default function SideBarOpen() {
-    const chatHistory = useSelector((state) => state.gitChat.chatHistory)
+    const chatHistory = useSelector((state) => state.gitChat.list)
     const currentChatIndex = useSelector((state) => state.gitChat.currentChatIndex)
     const darkMode = useSelector((state)=>state.gitChat.darkMode)
+    const currentChat = useSelector((state)=>state.gitChat.chatCurrent)
     const dispatch = useDispatch()    
+    let userId = localStorage.getItem("user-id");
 
     const [isOpenHistory, setisOpenHistory] = useState(false);
     const [isOpenBookmarks, setisOpenBookmarks] = useState(false);
@@ -33,6 +35,45 @@ export default function SideBarOpen() {
         setEditingChatIndex(null);
     }
 
+    const createChat = async () => {
+        dispatch(createNewChat());
+        try {
+            const res = await fetch(`http://localhost:8000/list`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "user-id": userId,
+            },
+            });
+            if (!res.ok) throw new Error("Ошибка запроса " + endpoint);
+            const listData = await res.json();
+            dispatch(setList(listData))
+        } catch (err) {
+            console.error(`Ошибка получения чата`, err);
+            throw err;
+        }
+    }
+
+    const loadSelectedChat = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:8000/chat/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "user-id": userId,
+            },
+            });
+            if (!res.ok) throw new Error("Ошибка запроса " + endpoint);
+            const data = await res.json();
+            dispatch(loadChat(data));
+            dispatch(setCurrentChatId(id));
+            return await data;
+        } catch (err) {
+            console.error(`Ошибка получения чата`, err);
+            throw err;
+        };
+    }
+
     const inputChatNameRefs = useRef({});
 
     useEffect(() => {
@@ -48,7 +89,11 @@ export default function SideBarOpen() {
             className={`transition-all duration-300 w-[232px]" bg-gray-100 dark:bg-gray-800 p-3 overflow-auto`}>
             <div id="Sidebar-Header">
                 <button
-                    onClick={()=>dispatch(commitChat())}
+                    onClick={()=>{
+                            createChat();
+                            dispatch(toggleProfile(false));
+                            dispatch(toggleGitCoine(false));
+                        }}
                     style={{backgroundColor:'transparent'}}
                     className={'new-chat-button AG16med'}
                     >
@@ -84,10 +129,10 @@ export default function SideBarOpen() {
                     <div className="list-sb-menu relative">
                     {chatHistory.map((msg, i) => (
                         <div 
-                            key={i}
+                            key={msg.id}
                             className={`list-sb-menu-item AG16reg ${currentChatIndex===i ? 'activeChat':''}`}
                         >
-                            {editingChatIndex === i ? (
+                            {editingChatIndex === msg.id ? (
                                 <input
                                     autoFocus
                                     ref={(el) => inputChatNameRefs.current[i] = el}
@@ -111,7 +156,11 @@ export default function SideBarOpen() {
                                 />
                             ) : (
                                 <button
-                                    onClick={() => dispatch(loadChatHistory(i))}
+                                    onClick={() => {
+                                        loadSelectedChat(msg.id)
+                                        dispatch(toggleProfile(false));
+                                        dispatch(toggleGitCoine(false));
+                                    }}
                                     className={`AG16reg`}
                                     style={{  
                                         background: "none",
@@ -131,7 +180,7 @@ export default function SideBarOpen() {
                                 onClick={(e)=>{
                                     e.stopPropagation();
                                     const rect = e.currentTarget.getBoundingClientRect();
-                                    setPopupIndex(i);
+                                    setPopupIndex(msg.id);
                                     setPopupPosition({top:rect.bottom + 4, left:rect.left});
                                 }}
                             >

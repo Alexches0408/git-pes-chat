@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { motion } from "framer-motion";
+import { Canvas } from '@react-three/fiber';
+import Mascot3DBase from '@/components/Mascot3DBase';
 import InputMessageForm from "@/components/mainChat/inputMessage";
+import EditMessageForm from "@/components/mainChat//editMessage";
 import { toggleChat, toggleGitCoine, toggleProfile } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
 import logo from "@/assets/icons/logo.png";
@@ -46,9 +49,18 @@ const MainChatWindow = () => {
             {/* Chat */}
             <div className="relative flex-1 flex flex-col overflow-hidden" id="MainChat-Window">
             {/* Header */}
-            <div className="flex justify-between items-center bg-gray-200 dark:bg-gray-700 p-2" id="chat-header">
+            <div className="flex justify-between items-center bg-gray-200 dark:dark" id="chat-header">
                 <div className="flex items-center gap-2">
-                    <img src={logo} alt="Логотип" />
+                {/* {<Canvas 
+                    style={{ width: 60, height: 60, cursor: 'pointer' }}
+                    dpr={[1, 2]}
+                    shadows
+                    gl={{ antialias: true, physicallyCorrectLights: true }}
+                    >
+                    <ambientLight intensity={0.3} />
+                    <directionalLight intensity={1.2} position={[5, 5, 5]} />
+                    <Mascot3DBase onClick={() => dispatch(toggleChat())} />
+                </Canvas> } */}
                     <span className=".AGhead">Гитпес</span>
                 </div>
                 <CloseIcon
@@ -77,7 +89,6 @@ const MainChatWindow = () => {
                         padding: searchQuery ? "8px 12px" : "8px 30px",
                         height: "22px",
                         borderRadius: "6px",
-                        border: "1px solid #ccc",
                         fontSize: "14px",
                         // transition: "padding 0.2s ease"
                     }}
@@ -87,46 +98,55 @@ const MainChatWindow = () => {
                 {/* Chat Messages */}
                 <div id="chat-messages">
                     <div className="bot-message AGtext">Привет! Я - ГитПес, Ваш цифровой ассистент и антибаг агент! Ваш запрос - мой git commit!</div>
-                    {chatCurrent.map((msg, i) => (
-                        <>
-                        {editingMessageIndex === i ? 
-                        (
-                            <div>Редактируемое сообщение</div>
-                        )
-                        :
-                        (
-                            <div 
-                            key={i}
-                            className={`AGtext ${msg.from === "bot" ? "bot-message" : "user-message"}`}
-                        >
-                            <div className="message-main">{highlightText(msg.text, searchQuery)}</div>
-                            {msg.from === "bot" ? (
-                                <div className="bot-extra">
+                    {chatCurrent.map((pair, i) => {
+                        const userMsg = Object.keys(pair)[0];
+                        const botMsg = pair[userMsg];
+
+                        return (
+                            <div key={i}>
+                                {/* Сообщение пользователя */}
+                                {editingMessageIndex === i ? (
                                     <div>
-                                        <UpdateIcon />
-                                        <LikeIcon />
-                                        <DislikeIcon />
+                                        <EditMessageForm text={userMsg} resetEditingMessageIndex={() => setEditingMessageIndex(null)}/>
                                     </div>
-                                    <div className="flex">
-                                        <BookMarkChatIcon />
-                                        <CopyIcon onClick={() => copyToClipboard(msg.text)} />
-                                        <ShareIcon/>
+                                ) : (
+                                    <div className="AGtext user-message">
+                                        <div className="message-main">
+                                            {highlightText(userMsg, searchQuery)}
+                                        </div>
+                                        <div className="user-extra">
+                                            <CopyIcon onClick={() => copyToClipboard(userMsg)} />
+                                            <EditIcon
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setEditingMessageIndex(i);
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Сообщение бота */}
+                                <div className="AGtext bot-message">
+                                    <div className="message-main">
+                                        {highlightText(botMsg, searchQuery)}
+                                    </div>
+                                    <div className="bot-extra">
+                                        <div>
+                                            <UpdateIcon />
+                                            <LikeIcon />
+                                            <DislikeIcon />
+                                        </div>
+                                        <div className="flex">
+                                            <BookMarkChatIcon />
+                                            <CopyIcon onClick={() => copyToClipboard(botMsg)} />
+                                            <ShareIcon />
+                                        </div>
                                     </div>
                                 </div>
-                            ) : (
-                                <div className="user-extra">
-                                    <CopyIcon onClick={() => copyToClipboard(msg.text)} />
-                                    <EditIcon 
-                                        onClick={(e)=>{
-                                            e.stopPropagation();
-                                            setEditingMessageIndex(i);
-                                        }}/>
-                                </div>
-                            )}
-                        </div>
-                        )}                  
-                        </>
-                    ))}
+                            </div>
+                        );
+                    })}
                 </div>
                 <div className="chat-messages-grad" />
                 {/* Chat Input */}

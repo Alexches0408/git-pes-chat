@@ -1,5 +1,5 @@
 import React from 'react'
-import {useDispatch } from 'react-redux'
+import {useDispatch, useSelector } from 'react-redux'
 import '@/styles/Sidebar.css';
 import '@/styles/GitCoine.css'
 import { CloseIcon } from '@/icons'
@@ -10,7 +10,7 @@ import { toggleGitCoine } from '@/features/gitChat/gitSlice'
 const GitCoine = () => {
     const dispatch = useDispatch()  
  
-
+    const tokens = useSelector((state) => state.gitChat.tokens);   
     return (
         <div id="gitcoine-window">
             <div id="gitcoine-head">
@@ -24,7 +24,7 @@ const GitCoine = () => {
                 <div className="gitcoine-item">
                     <div className="gitcoine-item-toprow">
                         <div className='AGtext'>Gitcoine в текущем месяце</div>
-                        <div id="tokens-count">75 000</div>
+                        <div id="tokens-count">{tokens}</div>
                     </div>
                     <div className="gitcoine-item-main AGtxt14">
                         1 токен =  3-4 символа<br />

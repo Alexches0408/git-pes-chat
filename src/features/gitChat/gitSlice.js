@@ -4,8 +4,9 @@ import { createSlice } from '@reduxjs/toolkit'
         initialState: {
             chatHistory: [],
             chatCurrent:[],
+            currentChatId: null,
             favoritesByChatId:{},
-            currentChatIndex: null,
+            
 
     
             isOpen: true,
@@ -13,6 +14,10 @@ import { createSlice } from '@reduxjs/toolkit'
             darkMode: false,
             profileMode:false,
             gitCoinMode:false,
+
+            user: { name: "", email: "" },
+            tokens: 0,
+            list: [],
         },
         reducers: {
             addMessage: (state, action) => {
@@ -33,14 +38,9 @@ import { createSlice } from '@reduxjs/toolkit'
             toggleGitCoine: (state, action) => {
                 state.gitCoinMode = action.payload;
             },
-            commitChat: (state) => {
+            createNewChat: (state) => {
                 if (state.chatCurrent.length>0) {
-                    const firstMessage = state.chatCurrent[0]?.text || 'Название чата';
-                    const title = firstMessage.slice(0, 20);
-                    state.chatHistory.push({
-                        title,
-                        messages: [...state.chatCurrent],
-                    });
+                    state.currentChatId=null;
                     state.chatCurrent=[];
                 }
             }, 
@@ -58,6 +58,12 @@ import { createSlice } from '@reduxjs/toolkit'
                 if (selectedChat) {
                     state.chatCurrent = [...selectedChat.messages];
                 }   
+            },
+            loadChat: (state, action) => {
+                state.chatCurrent = action.payload.text;
+            },
+            setCurrentChatId: (state, action) => {
+                state.currentChatId = action.payload;
             },
             deleteChat: (state, action) => {
                 const index = action.payload;
@@ -81,11 +87,20 @@ import { createSlice } from '@reduxjs/toolkit'
                 const {text, messageId} = action.payload;
                 state.chatCurrent[messageId].text = text;
 
-            }
+            },
+            setUser: (state, action) => {
+                state.user = action.payload; 
+            },
+            setTokens: (state, action) => {
+                state.tokens = action.payload; 
+            },
+            setList: (state, action) => {
+                state.list = action.payload; 
+            },
         },
     });
 
 
-export const { addMessage, toggleChat, toggleTheme, toggleSidebar, commitChat, loadChatHistory, deleteChat, toggleFavoriteMessage, renameChat, editChatCurrentMessage, toggleGitCoine, toggleProfile } = gitChatSlice.actions
+export const { addMessage, toggleChat, toggleTheme, toggleSidebar, createNewChat, loadChatHistory, loadChat, setCurrentChatId, deleteChat, toggleFavoriteMessage, renameChat, editChatCurrentMessage, toggleGitCoine, toggleProfile, setUser, setTokens, setList } = gitChatSlice.actions
 
 export default gitChatSlice.reducer

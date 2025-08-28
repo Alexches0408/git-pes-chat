@@ -4,12 +4,13 @@ import '@/styles/Sidebar.css';
 import '@/styles/Profile.css'
 import { CloseIcon } from '@/icons'
 import { toggleProfile  } from '@/features/gitChat/gitSlice'
-
+import { useSelector } from "react-redux";
 
 
 
 const Profile = ()=> {
     const dispatch = useDispatch()   
+    const user = useSelector((state) => state.gitChat.user);      
 
     return (
         <div id="profile-window">
@@ -23,11 +24,11 @@ const Profile = ()=> {
             <div id="profile-main">
                 <div className='profile-main-row AGtext linebottom'>
                     <div>Имя пользователя</div>
-                    <div>Илья Попов</div>
+                    <div>{user.name}</div>
                 </div>
                 <div className='profile-main-row AGtext linebottom'>
                     <div>Почта</div>
-                    <div>randommail@example.com</div>
+                    <div>{user.email}</div>
                 </div>
                 <div className='profile-main-row AGtext linebottom'>
                     <div>Архивировать все чаты</div>

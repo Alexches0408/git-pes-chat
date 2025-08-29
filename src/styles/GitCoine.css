@@ -3,9 +3,9 @@
 
 .GitCoineAGtext {
   font-family: 'Inter';
-  font-weight: 200;       /* Regular */
+  font-weight: 400;       
   font-size: 16px;
-  line-height: 24px;      /* можно указать и в px */
+  line-height: 24px;      
   color: #363B49;
 }
 
@@ -15,10 +15,9 @@
 
 .AGtxt14 {
   font-family: 'Inter', sans-serif;
-  font-weight: 400;       /* Regular */
+  font-weight: 400;      
   font-size: 14px;
-  line-height: 16px;      /* можно указать и в px */
-  color: #363B49;
+  line-height: 16px;     
 }
 
 .dark .GitCoineAGtxt14 {
@@ -26,15 +25,15 @@
 }
 
 
-.AGmenuchat {
+.GitCoineAGmenuchat {
   font-family: 'Inter', sans-serif;
-  font-weight: 500;     /* Medium */
+  font-weight: 500;    
   font-size: 16px;
   line-height: 20px;
   color: #363B49;
 }
 
-.dark .AGmenuchat {
+.dark .GitCoineAGmenuchat {
   color: #C9D1D9;
 }
 
@@ -116,4 +115,21 @@
   border: 1px solid #708AB9 !important;
   border-radius: 12px;
   color: #708AB9;
+}
+
+.gitcoin-main-button:hover {
+  background-color: #708AB9 !important;
+  border: none;
+  color: #FFF !important;
+}
+
+.gitcoin-main-button:active {
+  background-color: #53698F !important;
+  border: none;
+  color: #FFF !important;
+}
+
+
+.dark .gitcoin-main-button {
+  background-color: transparent;
 }

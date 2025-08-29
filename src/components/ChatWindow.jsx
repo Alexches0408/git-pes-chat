@@ -8,7 +8,7 @@ import GitCoine from "@/components/GitCoine/GitCoineWindow";
 import { useSelector, useDispatch } from 'react-redux'
 import '@/styles/ChatWindow.css';
 
-import { setUser, setTokens, setList } from "@/features/gitChat/gitSlice";
+import { setUser, setTokens, setChatHistory } from "@/features/gitChat/gitSlice";
 
 const ChatWindow = () => {
   const dispatch = useDispatch()
@@ -81,9 +81,8 @@ const ChatWindow = () => {
         const tokenData = await fetchWithUser("/user/token", userId);
         dispatch(setTokens(tokenData.tokens));
 
-        // /list → список
-        const listData = await fetchWithUser("/list", userId);
-        dispatch(setList(listData));
+        const chatHistory = await fetchWithUser("/list", userId);
+        dispatch(setChatHistory(chatHistory));
 
       } catch (err) {
         console.warn("userId невалидный, пересоздание:", err);
@@ -98,8 +97,8 @@ const ChatWindow = () => {
           const tokenData = await fetchWithUser("/user/token", newId);
           dispatch(setTokens(tokenData.tokens));
 
-          const listData = await fetchWithUser("/list", newId);
-          dispatch(setList(listData));
+          const chatHistory = await fetchWithUser("/list", newId);
+          dispatch(setChatHistory(chatHistory));
         } catch (err2) {
           console.error("Ошибка при повторных запросах:", err2);
         }

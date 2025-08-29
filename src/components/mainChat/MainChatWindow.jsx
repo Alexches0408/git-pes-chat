@@ -18,6 +18,7 @@ import {CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon,
 const MainChatWindow = () => {
     const dispatch = useDispatch()
     const chatCurrent = useSelector((state) => state.gitChat.chatCurrent)
+    const chatHistory=useSelector((state) => state.gitChat.chatHistory)
     const [editingMessageIndex, setEditingMessageIndex] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     
@@ -61,7 +62,7 @@ const MainChatWindow = () => {
                     <directionalLight intensity={1.2} position={[5, 5, 5]} />
                     <Mascot3DBase onClick={() => dispatch(toggleChat())} />
                 </Canvas> } */}
-                    <span className=".AGhead">Гитпес</span>
+                    <span className='AGhead'>Гитпес</span>
                 </div>
                 <CloseIcon
                     onClick={() => dispatch(toggleChat())} 
@@ -94,7 +95,9 @@ const MainChatWindow = () => {
             <div id="chat-body">
                 {/* Chat Messages */}
                 <div id="chat-messages">
-                    <div className="bot-message AGtext">Привет! Я - ГитПес, Ваш цифровой ассистент и антибаг агент! Ваш запрос - мой git commit!</div>
+                    {((!chatHistory || chatHistory.length === 0) && (!chatCurrent || chatCurrent.length === 0) )  && (
+                        <div className="bot-message AGtext">Привет! Я - ГитПес, Ваш цифровой ассистент и антибаг агент! Ваш запрос - мой git commit!</div>
+                    )}
                     {chatCurrent.map((pair, i) => {
                         const userMsg = Object.keys(pair)[0];
                         const botMsg = pair[userMsg];

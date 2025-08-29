@@ -2,14 +2,25 @@ import React from 'react'
 import {useDispatch } from 'react-redux'
 import '@/styles/Profile.css'
 import { CloseIcon } from '@/icons'
-import { toggleProfile  } from '@/features/gitChat/gitSlice'
+import { toggleProfile, fetchAPI, clearCurrentChat, setChatHistory } from '@/features/gitChat/gitSlice'
 import { useSelector } from "react-redux";
 
 
 
 const Profile = ()=> {
+    let userId = localStorage.getItem("user-id");
     const dispatch = useDispatch()   
     const user = useSelector((state) => state.gitChat.user);      
+
+    const deleteAllChats = () => {
+        dispatch(fetchAPI({
+            endpoint: 'chat',
+            headers:{"user-id": userId,},
+            method: 'DELETE',
+        }));
+        dispatch(clearCurrentChat());
+        dispatch(setChatHistory());
+    }
 
     return (
         <div id="profile-window">
@@ -47,6 +58,7 @@ const Profile = ()=> {
                     <div>Удалить все чаты</div>
                     <button 
                         className='red-profile-button ProfileAGtext'
+                        onClick={()=>{deleteAllChats()}}
                         style={{  
                             background: "none",
                             border: "none",

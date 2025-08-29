@@ -1,15 +1,15 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar, toggleGitCoine, toggleProfile  } from '@/features/gitChat/gitSlice'
-import { createNewChat, loadChat, deleteChat, renameChat, toggleTheme, setCurrentChatId, setList } from "../../features/gitChat/gitSlice";
+import { clearCurrentChat, loadChat, deleteChat, renameChat, toggleTheme, setCurrentChatId, setChatHistory, fetchAPI } from "../../features/gitChat/gitSlice";
 import SidebarContextMenu from "@/components/SideBar/SideBarContextMenu";
 import '@/styles/Sidebar.css';
 
 import {SidebarIconOpen, GitCoinIconDefault, ProfileIconDefault, BookmarkSidebarIconDefault, HistoryChatIconDefault} from '../../icons'
 
 export default function SideBarOpen() {
-    const chatHistory = useSelector((state) => state.gitChat.list)
-    const currentChatIndex = useSelector((state) => state.gitChat.currentChatId)
+    const chatHistory = useSelector((state) => state.gitChat.chatHistory)
+    const currentChatId = useSelector((state) => state.gitChat.currentChatId)
     const darkMode = useSelector((state)=>state.gitChat.darkMode)
     const currentChat = useSelector((state)=>state.gitChat.chatCurrent)
     const dispatch = useDispatch()    
@@ -17,9 +17,9 @@ export default function SideBarOpen() {
 
     const [isOpenHistory, setisOpenHistory] = useState(false);
     const [isOpenBookmarks, setisOpenBookmarks] = useState(false);
-    const [popupIndex, setPopupIndex] = useState(null);
+    const [popupId, setPopupId] = useState(null);
     const [popupPosition, setPopupPosition] = useState({top:0, left:0});
-    const [editingChatIndex, setEditingChatIndex] = useState(null);
+    const [editingChatId, setEditingChatId] = useState(null);
     const [editingChatName, setEditingChatName] = useState();
 
     const toggleHistoryChat = () => {
@@ -31,28 +31,19 @@ export default function SideBarOpen() {
     }
 
     const handleChatRename = () => {
-        dispatch(renameChat({chatId: editingChatIndex, newName:editingChatName}));
-        setEditingChatIndex(null);
+        dispatch(renameChat({chatId: editingChatId, newName:editingChatName}));
+        setEditingChatId(null);
     }
 
-    const createChat = async () => {
-        dispatch(createNewChat());
-        try {
-            const res = await fetch(`http://localhost:8000/list`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "user-id": userId,
-            },
-            });
-            if (!res.ok) throw new Error("Ошибка запроса " + endpoint);
-            const listData = await res.json();
-            dispatch(setList(listData))
-        } catch (err) {
-            console.error(`Ошибка получения чата`, err);
-            throw err;
-        }
-    }
+     const createChat = () => {
+         dispatch(clearCurrentChat());
+         dispatch(fetchAPI({
+             endpoint: 'list',
+             headers:{"user-id": userId,},
+             method: 'GET',
+             target: 'chatHistory'
+         }))
+     }
 
     const loadSelectedChat = async (id) => {
         try {
@@ -77,10 +68,10 @@ export default function SideBarOpen() {
     const inputChatNameRefs = useRef({});
 
     useEffect(() => {
-        if (editingChatIndex !== null && inputChatNameRefs.current[editingChatIndex]) {
-            inputChatNameRefs.current[editingChatIndex].select(); 
+        if (editingChatId !== null && inputChatNameRefs.current[editingChatId]) {
+            inputChatNameRefs.current[editingChatId].select(); 
         }
-    }, [editingChatIndex]);
+    }, [editingChatId]);
 
 
     return (
@@ -94,12 +85,11 @@ export default function SideBarOpen() {
                             dispatch(toggleProfile(false));
                             dispatch(toggleGitCoine(false));
                         }}
-                    style={{backgroundColor:'transparent'}}
-                    className={'new-chat-button AG16med'}
+                    className={`new-chat-button AG16med ${!currentChatId ? 'new-chat-button-active':''}`}
                     >
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.0001 9H1.00013" stroke="#708AB9" stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M9 1V16.9999" stroke="#708AB9" stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M17.0001 9H1.00013" stroke={currentChatId ? "#708AB9":"#FFF"} stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M9 1V16.9999" stroke={currentChatId ? "#708AB9":"#FFF"} stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                         <span>Новый чат</span>
                 </button>
@@ -114,7 +104,7 @@ export default function SideBarOpen() {
                     <span className='ml-[10px]'>Закладки</span>
                 </div>
                 <div 
-                    className={`sb-menu-head AG16med ${chatHistory.some(chat => chat.id === currentChatIndex) ? 'activeMenuItem' : ''}`}
+                    className={`sb-menu-head AG16med`}
                     onClick={toggleHistoryChat}
                 >
                     <HistoryChatIconDefault/>
@@ -122,15 +112,15 @@ export default function SideBarOpen() {
                 </div>
                 {isOpenHistory && (
                     <div className={`list-sb-menu relative`}>
-                    {chatHistory.map((msg, i) => (
+                    {Array.isArray(chatHistory) && chatHistory.map((chat, i) => (
                         <div 
-                            key={msg.id}
-                            className={`list-sb-menu-item AG16reg ${currentChatIndex===msg.id ? 'activeChat':''}`}
+                            key={chat.id}
+                            className={`list-sb-menu-item AG16reg ${currentChatId===chat.id ? 'activeChat':''}`}
                         >
-                            {editingChatIndex === msg.id ? (
+                            {editingChatId === chat.id ? (
                                 <input
                                     autoFocus
-                                    ref={(el) => inputChatNameRefs.current[i] = el}
+                                    ref={(el) => inputChatNameRefs.current[chat.id] = el}
                                     className={`AG16reg`}
                                     value={editingChatName}
                                     onChange={(e) => setEditingChatName(e.target.value)}
@@ -152,7 +142,7 @@ export default function SideBarOpen() {
                             ) : (
                                 <button
                                     onClick={() => {
-                                        loadSelectedChat(msg.id);
+                                        loadSelectedChat(chat.id);
                                         dispatch(toggleProfile(false));
                                         dispatch(toggleGitCoine(false));
                                     }}
@@ -167,15 +157,16 @@ export default function SideBarOpen() {
                                         cursor: "pointer",
                                         }}
                                 >
-                                    {(msg.title?.slice(0, 15) || 'Без названия')}
+                                    {(chat.title?.slice(0, 15) || 'Без названия')}
                                 </button>
                             )}
                                 
                             <div
+                                className='context-mn-icon'
                                 onClick={(e)=>{
                                     e.stopPropagation();
                                     const rect = e.currentTarget.getBoundingClientRect();
-                                    setPopupIndex(msg.id);
+                                    setPopupId(chat.id);
                                     setPopupPosition({top:rect.bottom + 4, left:rect.left});
                                 }}
                             >
@@ -185,16 +176,19 @@ export default function SideBarOpen() {
                             </div>
                         </div>
                     ))}
-                    {popupIndex !==null && (
+                    {popupId !==null && (
                         <SidebarContextMenu 
                             position={popupPosition}
-                            onClose={()=>setPopupIndex(null)}
+                            chat_id={popupId}
+                            onClose={()=>setPopupId(null)}
                             onEdit={()=> {
-                                setEditingChatIndex(popupIndex);
-                                setEditingChatName(chatHistory[popupIndex].title || '');
-                                setPopupIndex(null);
+                                const chat = chatHistory.find(c => c.id === popupId);
+                                if (chat) {
+                                    setEditingChatId(chat.id);
+                                    setEditingChatName(chat.title || '');
+                                }
+                                setPopupId(null);
                             }}
-                            onDelete={()=>dispatch(deleteChat(popupIndex))}
                         />
                     )}
                 </div>

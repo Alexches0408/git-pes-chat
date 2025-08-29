@@ -11,12 +11,12 @@ const InputMessageForm = () => {
     const sideBarIsOpen = useSelector((state) => state.gitChat.sidebarOpen)
     const currentChatId = useSelector((state)=>state.gitChat.currentChatId)
     const dispatch = useDispatch()
-    const [questionType, setQuestionType] = useState("general"); 
+    const [questionType, setQuestionType] = useState("specialized"); 
     const [inputValue, setInputValue] = useState("");
 
     let userId = localStorage.getItem("user-id");
 
-    const [selectedOptionQuestion, setSelectedOptionQuestion] = useState(null); // null — ничего не выбрано
+    const [selectedOptionQuestion, setSelectedOptionQuestion] = useState(null); 
 
     const optionsQuestion = ["Кратко", "Переформулируй", "Проще"];
     const tooltips = {
@@ -138,8 +138,8 @@ const InputMessageForm = () => {
                     {optionsQuestion.map((option) => (
                         <button
                         key={option}
-                        className={`AGtxt14 ${
-                            selectedOptionQuestion === option ? "type-answer-sel" : "type-answer"
+                        className={`AGtxt14 type-answer ${
+                            selectedOptionQuestion === option ? "type-answer-sel" : ""
                         }`}
                         onClick={() => choiseOptionQuestion(option)}
                         onMouseEnter={(e) => {

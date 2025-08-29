@@ -14,7 +14,7 @@ const GitCoine = () => {
     return (
         <div id="gitcoine-window">
             <div id="gitcoine-head">
-                <div className='AGmenuchat'>Токены</div>
+                <div className='GitCoineAGmenuchat'>Токены</div>
                 <CloseIcon            
                     onClick={()=>{
                         dispatch(toggleGitCoine(false))

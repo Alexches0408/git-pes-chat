@@ -2,10 +2,9 @@
 
 .AGhead {
   font-family: 'Inter', sans-serif;
-  font-weight: 500;       /* Bold */
+  font-weight: 600;       
   font-size: 24px;
-  line-height: 150%;      /* или 1.5 */
-  color: #363B49;
+  line-height: 150%;      
 }
 
 .AGtext {
@@ -13,7 +12,6 @@
   font-weight: 400;     
   font-size: 16px;
   line-height: 24px;      /* можно указать и в px */
-  color: #363B49;
 }
 
 .AGtxt14 {
@@ -21,7 +19,6 @@
   font-weight: 400;       /* Regular */
   font-size: 14px;
   line-height: 16px;      /* можно указать и в px */
-  color: #363B49;
 }
 
 .AGmenuchat {
@@ -59,7 +56,6 @@
 #chat-header span {
   margin-left: 5px;
   font-size: 24px;
-  font-weight: bold;
 }
 
 #toggle-chat-btn {
@@ -82,6 +78,7 @@
   outline: none;
   box-shadow: none;
   border: 1px solid #D0D9DF;
+  border-radius: 12px;
 }
 
 .dark .search-input {
@@ -125,7 +122,8 @@
 .bot-message,
 .user-message {
   margin-bottom: 20px;
-  border-radius: 8px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   text-align: left;
 }
 
@@ -133,7 +131,7 @@
     background-color: #EAEEF11A;
     border: 1px solid #EAEEF1;
     padding: 12px 20px;
-    border-radius: 6px;
+    border-bottom-right-radius: 12px;
   }
 
 .dark .bot-message {
@@ -155,6 +153,7 @@
   padding: 12px 20px;
   border: 1px solid #EAEEF1;
   margin-left: auto;
+  border-bottom-left-radius: 12px;
 }
 
 .dark .user-message {
@@ -188,6 +187,7 @@
   max-width: 640px;
 }
 
+
 .edit-message-container {
   display: flex;
   flex-direction: column;
@@ -210,6 +210,12 @@
   outline: none; 
 }
 
+.dark .edit-textarea {
+  background-color: #EAEEF11A;
+  color: #C9D1D9;
+  font-weight: 300;
+}
+
 .edit-actions {
   display: flex;
   justify-content: flex-end;
@@ -220,8 +226,11 @@
 .btn-send {
   width: 110px;
   height: 36px;
-  padding: 6px 12px;
+  display: flex;
+  align-items: center;   
+  justify-content: center;
   border-radius: 12px;
+  outline: none !important;
 }
 
 .btn-cancel {
@@ -231,13 +240,31 @@
   cursor: pointer;
 }
 
+.btn-cancel:hover,
+.btn-cancel:active {
+  background-color: rgba(82, 94, 225, 0.2);
+  outline: none !important;
+}
+
 .btn-send {
   border: none;
   color: white !important;
   background-color: #708AB9;
   cursor: pointer;
+  font-weight: 300;
 }
 
+.btn-send:hover,
+.btn-send:active {
+  background-color: #53698F;
+}
+
+.dark .btn-cancel:hover,
+.dark .btn-cancel:focus,
+.dark .btn-cancel:active {
+  border: 1px solid #708AB9;
+  background-color: rgba(91, 113, 152, 0.2);
+}
 
 .chat-messages-grad {
   pointer-events: none;
@@ -268,6 +295,8 @@
 #toggle-type-ask {
   display: flex;
   justify-content: space-between;
+  background-color: #F0F3F5;
+  border-radius: 12px;
 }
 
 .dark #toggle-type-ask {
@@ -285,7 +314,7 @@
   border: none;
   padding: 8px 12px;
   color: #747A85;
-  background-color: #F0F3F5;
+  background-color: transparent;
 }
 
 .dark .toggle-type {
@@ -298,6 +327,11 @@
 }
 
 .toggle-type.toggle-type-active {
+  background-color: #708AB9;
+  color: #fff;
+}
+
+.dark .toggle-type.toggle-type-active {
   background-color: #708AB9;
   color: #fff;
 }
@@ -327,11 +361,9 @@
   border: none;
   background-color: transparent;
   resize: none;
+  color: #363B49;
 }
 
-#chat-input textarea {
-  color: #A3A3A3;
-}
 
 .dark #chat-input textarea {
   color: #C9D1D9;
@@ -381,15 +413,21 @@
 }
 
 .dark .type-answer {
-  color: #B5BEC7;
-  background-color: rgba(234, 238, 241, 0.2);
+  color: #C9D1D9;
+  background-color: rgba(234, 238, 241, 0.3);
 }
 
+.type-answer:hover,
+.type-answer:active,
 .type-answer-sel {
-  margin-right: 8px;
-  padding: 4px 12px;
-  border: none;
-  float: left;
+  color: #FFF;
+  background-color: #708AB9;
+}
+
+
+.dark .type-answer:hover,
+.dark .type-answer:active,
+.dark .type-answer-sel {
   color: #FFF;
   background-color: #708AB9;
 }

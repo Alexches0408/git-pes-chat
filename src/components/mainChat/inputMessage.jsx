@@ -119,7 +119,7 @@ const InputMessageForm = () => {
             <div id="chat-input">
                 <textarea
                     type="text"
-                    className="AGtext"
+                    className="AGtext inputPlaceHolder"
                     placeholder="Напиши сообщение..."
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}

@@ -1,7 +1,25 @@
-const SearchIconDefault = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M19 19L15.622 15.622M15.622 15.622C16.748 14.496 17.4444 12.9404 17.4444 11.2222C17.4444 7.78578 14.6587 5 11.2222 5C7.78578 5 5 7.78578 5 11.2222C5 14.6587 7.78578 17.4444 11.2222 17.4444C12.9404 17.4444 14.496 16.748 15.622 15.622Z" stroke="#9BA3AF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-);
+import React from 'react';
+import { useSelector } from 'react-redux'
+
+const SearchIconDefault = () => {
+
+  const darkMode = useSelector((state)=>state.gitChat.darkMode)
+
+  const strokeColor = darkMode ? "#EAEEF14D" : "#9BA3AF";
+
+  let content;
+    content = (
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{position: "relative", top:"10px", left:"8px"}} xmlns="http://www.w3.org/2000/svg">
+        <circle cx="11" cy="11" r="8" stroke={strokeColor} strokeWidth="2" />
+        <line x1="16.5" y1="16.5" x2="22" y2="22" stroke={strokeColor} strokeWidth="2" />
+      </svg>
+    );
+
+  return (
+    <div>
+      {content}
+    </div>
+  );
+};
 
 export default SearchIconDefault;

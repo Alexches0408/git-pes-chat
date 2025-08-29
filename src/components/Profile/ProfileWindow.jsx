@@ -1,6 +1,5 @@
 import React from 'react'
 import {useDispatch } from 'react-redux'
-import '@/styles/Sidebar.css';
 import '@/styles/Profile.css'
 import { CloseIcon } from '@/icons'
 import { toggleProfile  } from '@/features/gitChat/gitSlice'
@@ -15,25 +14,25 @@ const Profile = ()=> {
     return (
         <div id="profile-window">
             <div id="profile-head">
-                <div className='AGmenuchat'>Профиль</div>
+                <div className='ProfileAGmenuchat'>Профиль</div>
                 <CloseIcon            
                     onClick={()=>{
                         dispatch(toggleProfile(false))
                     }}/>
             </div>
             <div id="profile-main">
-                <div className='profile-main-row AGtext linebottom'>
+                <div className='profile-main-row ProfileAGtext linebottom'>
                     <div>Имя пользователя</div>
                     <div>{user.name}</div>
                 </div>
-                <div className='profile-main-row AGtext linebottom'>
+                <div className='profile-main-row ProfileAGtext linebottom'>
                     <div>Почта</div>
                     <div>{user.email}</div>
                 </div>
-                <div className='profile-main-row AGtext linebottom'>
+                <div className='profile-main-row ProfileAGtext linebottom'>
                     <div>Архивировать все чаты</div>
                     <button 
-                        className='main-profile-button AGtext'
+                        className='main-profile-button ProfileAGtext'
                         style={{  
                             background: "none",
                             border: "none",
@@ -44,10 +43,10 @@ const Profile = ()=> {
                         Архивировать
                     </button>
                 </div>
-                <div className='profile-main-row AGtext linebottom'>
+                <div className='profile-main-row ProfileAGtext linebottom'>
                     <div>Удалить все чаты</div>
                     <button 
-                        className='red-profile-button AGtext'
+                        className='red-profile-button ProfileAGtext'
                         style={{  
                             background: "none",
                             border: "none",
@@ -58,10 +57,10 @@ const Profile = ()=> {
                         Удалить
                     </button>
                 </div>
-                <div className='profile-main-row AGtext'>
+                <div className='profile-main-row ProfileAGtext'>
                     <div>Выйти из профиля</div>
                     <button 
-                        className='main-profile-button AGtext'
+                        className='main-profile-button ProfileAGtext'
                         style={{  
                             background: "none",
                             border: "none",

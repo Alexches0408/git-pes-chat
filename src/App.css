@@ -49,3 +49,7 @@ body {
   height: 760px;
 }
 
+
+.dark #chat-wraper {
+  background-color: #2A3036;
+}

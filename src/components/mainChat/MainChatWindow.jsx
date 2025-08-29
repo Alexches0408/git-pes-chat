@@ -10,7 +10,7 @@ import '@/styles/ChatWindow.css';
 import logo from "@/assets/icons/logo.png";
 
 // Import of Icons
-import {CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon} from '@/icons'
+import {CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon, SearchIconDefault} from '@/icons'
 
 
 
@@ -72,10 +72,7 @@ const MainChatWindow = () => {
             {!searchQuery && (
                 <div style={{ position: 'absolute'}}>
                     {/* СВОЯ SVG */}
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style={{position: "relative", top:"10px", left:"8px"}} xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="11" cy="11" r="8" stroke="#888" strokeWidth="2" />
-                    <line x1="16.5" y1="16.5" x2="22" y2="22" stroke="#888" strokeWidth="2" />
-                    </svg>
+                    <SearchIconDefault/>
                 </div>
             )}
                 <input
@@ -152,7 +149,7 @@ const MainChatWindow = () => {
                 {/* Chat Input */}
                 <InputMessageForm/>
             </div>
-            <div className="h-[35px]"></div>
+            <div className="h-[1px]"></div>
             </div>
         </motion.div>
     )

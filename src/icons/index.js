@@ -16,3 +16,4 @@ export * from './share';
 export * from './sidebar';
 export * from './theme';
 export * from './update';
+export * from './plus';

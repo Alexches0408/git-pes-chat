@@ -1,14 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-.AGhead {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;       /* Bold */
-  font-size: 24px;
-  line-height: 150%;      /* или 1.5 */
-  color: #363B49;
-}
-
-.AGtext {
+.ProfileAGtext {
   font-family: 'Inter';
   font-weight: 200;       /* Regular */
   font-size: 16px;
@@ -16,20 +8,17 @@
   color: #363B49;
 }
 
-.AGtxt14 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;       /* Regular */
-  font-size: 14px;
-  line-height: 16px;      /* можно указать и в px */
-  color: #363B49;
+.dark .ProfileAGtext{
+  color: #C9D1D9;
 }
 
-.AGmenuchat {
+.ProfileAGmenuchat {
   font-family: 'Inter', sans-serif;
   font-weight: 500;     /* Medium */
   font-size: 16px;
   line-height: 20px;
 }
+
 
 #profile-window{
     width: 480px;
@@ -60,6 +49,10 @@
     border-bottom: 1px solid #E1E4E8;
 }
 
+.dark .linebottom {
+    border-bottom: 1px solid #EAEEF11A;
+}
+
 .main-profile-button,
 .red-profile-button {
     border-radius: 12px;
@@ -68,6 +61,10 @@
 .main-profile-button {
     padding: 8px 12px;
     border: 1px solid #E1E4E8 !important;
+}
+
+.dark .main-profile-button  {
+  border: 1px solid #EAEEF11A !important;
 }
 
 .red-profile-button {

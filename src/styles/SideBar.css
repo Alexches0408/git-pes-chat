@@ -106,6 +106,17 @@
     background-color: rgba(234, 238, 241, 0.05) !important;
   }
 
+
+  .sb-menu-head:active, 
+  .sb-menu-head.activeHeader {
+    background-color: #E3E9EE !important;
+  }
+
+  .dark .sb-menu-head:active, 
+  .dark .sb-menu-head.activeHeader {
+    background-color: #EAEEF11A !important;
+  }
+
   #sb-main {
     height: 470px;
     overflow-y: auto;
@@ -149,6 +160,11 @@
     display: flex;
     justify-content: left;
     align-items: center;
+    text-overflow: ellipsis;
+  }
+
+  .list-sb-menu-item button:hover {
+    text-overflow: clip;
   }
 
   .dark .list-sb-menu-item,
@@ -180,6 +196,7 @@
   .context-mn-icon {
     opacity: 0;
     transition: opacity 0.2s;
+    margin-left: 5px;
   }
 
   .list-sb-menu-item:hover .context-mn-icon {
@@ -386,5 +403,15 @@
       margin-bottom: 20px;
     }
 
+    .context-mn-icon {
+      opacity: 1;
+    }
 
+    .list-sb-menu-item button {
+      display: block;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+    }
   }

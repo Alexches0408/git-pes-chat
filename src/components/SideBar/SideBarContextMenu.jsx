@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { createPortal } from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchAPI, clearCurrentChat } from '@/features/gitChat/gitSlice'
@@ -10,6 +10,7 @@ export default function SidebarContextMenu({onClose, onShare, onEdit, position={
     const ref = useRef();
     const dispatch = useDispatch() 
     const currentChatId = useSelector((state) => state.gitChat.currentChatId)
+    const [forMobile, setForMobile] = useState(false);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -20,6 +21,16 @@ export default function SidebarContextMenu({onClose, onShare, onEdit, position={
         document.addEventListener('mousedown', handleClickOutside);
         return ()=>document.removeEventListener('mousedown', handleClickOutside);
     }, [onClose])
+
+      
+    useEffect(() => {
+      const mediaQuery = window.matchMedia("(max-width: 640px)");
+      setForMobile(mediaQuery.matches);
+  
+      const handler = (e) => setForMobile(e.matches);
+      mediaQuery.addListener(handler);
+  
+    }, []);
 
     const deleteChat = async (chat_id) => {
         await dispatch(fetchAPI({
@@ -45,7 +56,7 @@ export default function SidebarContextMenu({onClose, onShare, onEdit, position={
             <div id="all-background-for-sb-popup" />
             <div
                 ref={ref}
-                style={{top: position.top, left:position.left}}
+                style={{top: forMobile ? position.top + 15 : position.top, left: !forMobile ? position.left : '4vw'}}
                 className="sidebar-popup"
             >
                 <button

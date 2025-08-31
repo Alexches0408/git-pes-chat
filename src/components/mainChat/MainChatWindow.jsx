@@ -17,6 +17,7 @@ import {MNewChatIcon, MSideBarIcon, CopyIcon, EditIcon, UpdateIcon, LikeIcon, Di
 
 
 const MainChatWindow = () => {
+    let userId = localStorage.getItem("user-id");
     const dispatch = useDispatch()
     const chatCurrent = useSelector((state) => state.gitChat.chatCurrent)
     const chatHistory=useSelector((state) => state.gitChat.chatHistory)

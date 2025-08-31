@@ -8,10 +8,11 @@ import '@/styles/Sidebar.css';
 import {SidebarIconOpen, GitCoinIconDefault, ProfileIconDefault, BookmarkSidebarIconDefault, HistoryChatIconDefault} from '../../icons'
 
 export default function SideBarOpen() {
-    const chatHistory = useSelector((state) => state.gitChat.chatHistory)
-    const currentChatId = useSelector((state) => state.gitChat.currentChatId)
-    const darkMode = useSelector((state)=>state.gitChat.darkMode)
-    const currentChat = useSelector((state)=>state.gitChat.chatCurrent)
+    const chatHistory = useSelector((state) => state.gitChat.chatHistory);
+    const currentChatId = useSelector((state) => state.gitChat.currentChatId);
+    const darkMode = useSelector((state)=>state.gitChat.darkMode);
+    const profileMode = useSelector((state)=>state.gitChat.profileMode);
+    const gitCoinMode = useSelector((state)=>state.gitChat.gitCoinMode);
     const dispatch = useDispatch()    
     let userId = localStorage.getItem("user-id");
 
@@ -155,9 +156,13 @@ export default function SideBarOpen() {
                                         width: "100%",
                                         outline: "none",
                                         cursor: "pointer",
+                                        overflowX:"hidden",
+                                        whiteSpace: "nowrap",
+                                        display:"block",
+                                        textAlign:"left",
                                         }}
                                 >
-                                    {(chat.title?.slice(0, 15) || 'Без названия')}
+                                    {(chat.title || 'Без названия')}
                                 </button>
                             )}
                                 
@@ -202,7 +207,7 @@ export default function SideBarOpen() {
                         dispatch(toggleGitCoine(true))
                         dispatch(toggleProfile(false))
                     }}
-                    className='sb-menu-head AG16med'
+                    className={`sb-menu-head AG16med ${gitCoinMode && 'activeHeader'}`}
                     style={{  
                         background: "none",
                         border: "none",
@@ -218,7 +223,7 @@ export default function SideBarOpen() {
                         dispatch(toggleProfile(true))
                         dispatch(toggleGitCoine(false))
                     }}
-                    className='sb-menu-head AG16med'
+                    className={`sb-menu-head AG16med ${profileMode && 'activeHeader'}`}
                     style={{  
                         background: "none",
                         border: "none",

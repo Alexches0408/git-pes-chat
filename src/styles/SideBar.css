@@ -219,6 +219,7 @@
     justify-content: left;
     align-items: center;
     padding: 4px 8px;
+    color: #363B49;
   }
 
   .dark .context-menu-item {
@@ -357,4 +358,15 @@
     height: 18px;
     background-color: #24282C;
     border-radius: 9px;
+  }
+
+  @media (max-width: 768px) {
+    .mob-sidebar-bg {
+      position: fixed;
+      z-index: 1100;
+      width: 100vw;
+      height:100vh;
+      opacity: 0.25;
+      background-color: #000;
+    }
   }

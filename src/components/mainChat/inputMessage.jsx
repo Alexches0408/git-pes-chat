@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux'
-import { addMessage, setCurrentChatId } from "../../features/gitChat/gitSlice";
+import { addMessage, setCurrentChatId, fetchAPI, setTokens } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
 import {MicrophoneIconDefault, InputIcon} from '@/icons'
 
@@ -28,68 +28,38 @@ const InputMessageForm = () => {
     const [hoveredOption, setHoveredOption] = useState(null);
     const [arrowPos, setArrowPos] = useState(0);
 
-    const newChatMessage = async () => {
+    const handleChatMessage = async () => {
         const trimmed = inputValue.trim();
         if (!trimmed) return;
         setInputValue("");
     
         try {
-            const response = await fetch("http://localhost:8000/chats", {
-                method: "POST",
-                headers: {
-                "Content-Type": "application/json",
-                "user-id": userId,
-                },
-                body: JSON.stringify({
-                title: trimmed.slice(0, 20),
-                text: trimmed,
-                type_question: questionType === "specialized" ? "Вопрос по GitVerse" : "Вопрос общего характера",
-                }),
-            });
+            const response = await dispatch(fetchAPI({
+                endpoint:`${currentChatId ?`chat/${currentChatId}`:'chats'}`,
+                headers:{"user-id": userId,},
+                method: `${currentChatId ?'PUT':'POST'}`,
+                body: {
+                    question: trimmed,
+                    type_question: questionType === "specialized" ? "Вопрос по GitVerse" : "Вопрос общего характера",
+                    },
+            })).unwrap();
     
-            const data = await response.json();
-    
-            const assistantContent = data.text || "Error: not answer";
-            dispatch(setCurrentChatId(data.id))
+            const assistantContent = response.data.text || "Error: not answer";
+            dispatch(setCurrentChatId(response.data.id))
             dispatch(addMessage({ [trimmed]: assistantContent }));
+
+            const tokens = await dispatch(fetchAPI({
+                endpoint:'user/token',
+                headers:{"user-id": userId,},
+                method: 'GET',
+            })).unwrap();
+            dispatch(setTokens(tokens.data.tokens));
                 } catch (error) {
                 dispatch(addMessage({ [trimmed]: "Ошибка при отправке запроса к серверу." }));
                 console.error("Error:", error);
                 }
-            
-            setInputValue("");
         };
         
-    const existChatMessage = async () => {
-        const trimmed = inputValue.trim();
-        if (!trimmed) return;
-        setInputValue("");
-    
-        try {
-            const response = await fetch(`http://localhost:8000/chat/${currentChatId}`, {
-                method: "PUT",
-                headers: {
-                "Content-Type": "application/json",
-                "user-id": userId,
-                },
-                body: JSON.stringify({
-                question: trimmed,
-                type_question: questionType === "specialized" ? "Вопрос по GitVerse" : "Вопрос общего характера",
-                }),
-            });
-    
-            const data = await response.json();
-    
-            const assistantContent = data.text || "Error: not answer";
-            dispatch(addMessage({ [trimmed]: assistantContent }));
-                } catch (error) {
-                dispatch(addMessage({ [trimmed]: "Ошибка при отправке запроса к серверу." }));
-                console.error("Error:", error);
-                }
-            
-            setInputValue("");
-        };
-
     const choiseOptionQuestion = (option) => {
         if (selectedOptionQuestion === option) {
             setSelectedOptionQuestion(null); // Снять выбор, если кликнуть по активной
@@ -125,14 +95,16 @@ const InputMessageForm = () => {
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                            if (currentChatId === null) {
-                                newChatMessage();
-                              } else {
-                                existChatMessage();
-                              }
+                            handleChatMessage()
                         }
                     }}
                 />
+                <div id="mob-input-icons">
+                    {inputValue ? 
+                        <InputIcon inputValue={inputValue} onClick={() => handleChatMessage()} /> : 
+                        <MicrophoneIconDefault />
+                    }
+                </div>
                 <div id="chat-input-buttons">
                 <div className="tooltip-container">
                     {optionsQuestion.map((option) => (
@@ -164,11 +136,11 @@ const InputMessageForm = () => {
                         />
                     </div>
                 </div>
-                    <div>
+                    <div id="input-icons">
                         <MicrophoneIconDefault />
                         <InputIcon 
                             inputValue={inputValue} 
-                            onClick={() => currentChatId === null ? newChatMessage() : existChatMessage()} 
+                            onClick={() => handleChatMessage()} 
                         />
                     </div>
                 </div>

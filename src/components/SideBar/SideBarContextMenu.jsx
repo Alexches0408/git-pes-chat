@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 import { createPortal } from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchAPI } from '@/features/gitChat/gitSlice'
+import { fetchAPI, clearCurrentChat } from '@/features/gitChat/gitSlice'
 import '@/styles/Sidebar.css';
 import {ConMenEditIcon, ConMenShareIcon} from '../../icons'
 
@@ -9,6 +9,7 @@ export default function SidebarContextMenu({onClose, onShare, onEdit, position={
     let userId = localStorage.getItem("user-id");
     const ref = useRef();
     const dispatch = useDispatch() 
+    const currentChatId = useSelector((state) => state.gitChat.currentChatId)
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -20,14 +21,23 @@ export default function SidebarContextMenu({onClose, onShare, onEdit, position={
         return ()=>document.removeEventListener('mousedown', handleClickOutside);
     }, [onClose])
 
-    const deleteChat = (chat_id) => {
-        dispatch(fetchAPI({
+    const deleteChat = async (chat_id) => {
+        await dispatch(fetchAPI({
             endpoint: 'detail_delete',
             headers:{"user-id": userId,},
             method: 'DELETE',
             body:{"chat_id":`${chat_id}`},
+        }))
+        dispatch(fetchAPI({
+            endpoint: 'list',
+            headers:{"user-id": userId,},
+            method: 'GET',
             target: 'chatHistory'
         }))
+        if (chat_id === currentChatId) {
+            dispatch(clearCurrentChat());
+        }
+        
     }
 
     return createPortal(

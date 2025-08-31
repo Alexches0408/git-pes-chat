@@ -5,12 +5,13 @@ import { Canvas } from '@react-three/fiber';
 import Mascot3DBase from '@/components/Mascot3DBase';
 import InputMessageForm from "@/components/mainChat/inputMessage";
 import EditMessageForm from "@/components/mainChat//editMessage";
+import MobileSideBar from "@/components/SideBar/MobileSideBar";
 import { toggleChat, toggleGitCoine, toggleProfile } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
 import logo from "@/assets/icons/logo.png";
 
 // Import of Icons
-import {CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon, SearchIconDefault} from '@/icons'
+import {MSideBarIcon, CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon, SearchIconDefault} from '@/icons'
 
 
 
@@ -21,6 +22,7 @@ const MainChatWindow = () => {
     const chatHistory=useSelector((state) => state.gitChat.chatHistory)
     const [editingMessageIndex, setEditingMessageIndex] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
+    const [openMobileSB, setOpenMobileSB] = useState(false);
     
     const highlightText = (text, query) => {
         if (!query) return text;
@@ -47,10 +49,23 @@ const MainChatWindow = () => {
 
     return(
         <motion.div>
+            {/* SideBar */}
+            <div id="mob-sidebar-wrapper">
+                <MobileSideBar open={openMobileSB} onClose={() => setOpenMobileSB(false)} />
+            </div>
             {/* Chat */}
             <div className="relative flex-1 flex flex-col overflow-hidden" id="MainChat-Window">
             {/* Header */}
             <div className="flex justify-between items-center bg-gray-200 dark:dark" id="chat-header">
+                <div 
+                    id="m-sb-toggle"
+                    onClick={()=> {
+                        setOpenMobileSB(true);
+                        console.log(openMobileSB)
+                    }}
+                >
+                    <MSideBarIcon/>
+                </div>
                 <div className="flex items-center gap-2">
                 {/* {<Canvas 
                     style={{ width: 60, height: 60, cursor: 'pointer' }}
@@ -64,14 +79,15 @@ const MainChatWindow = () => {
                 </Canvas> } */}
                     <span className='AGhead'>Гитпес</span>
                 </div>
-                <CloseIcon
-                    onClick={() => dispatch(toggleChat())} 
-                    id="toggle-chat-btn"
-                />
+                <div id="toggle-chat-btn">
+                    <CloseIcon
+                        onClick={() => dispatch(toggleChat())}
+                    />    
+                </div>
             </div>
             <div id="search-bar"> 
             {!searchQuery && (
-                <div style={{ position: 'absolute'}}>
+                <div id="search-icon-wrapper" style={{ position: 'absolute'}}>
                     {/* СВОЯ SVG */}
                     <SearchIconDefault/>
                 </div>
@@ -81,13 +97,13 @@ const MainChatWindow = () => {
                     placeholder="Поиск по сообщениям..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="search-input AGtxt14"
+                    className={`search-input AGtxt14 ${searchQuery && 'search-input-with-query'}`}
                     style={{
-                        width: searchQuery ? "460px" : "420px",
-                        padding: searchQuery ? "8px 12px" : "8px 30px",
                         height: "22px",
                         borderRadius: "6px",
                         fontSize: "14px",
+                        backgroundColor: "transparent",
+                        color: "#363B49",
                         // transition: "padding 0.2s ease"
                     }}
                 />

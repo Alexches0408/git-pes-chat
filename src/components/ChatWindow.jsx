@@ -37,7 +37,7 @@ const ChatWindow = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               name: "TestUser",
-              email: "test@user.com",
+              email: `test+${Date.now()}@user.com`,
             }),
           });
           if (!res.ok) throw new Error("Ошибка при создании пользователя");
@@ -118,6 +118,7 @@ const ChatWindow = () => {
         >
             {/* SideBar */}
             <div
+                id="sidebar-wrapper"
                 className={`transition-all duration-300 ${
                     sideBarIsOpen ? "w-[232px]" : "w-[70px]"
                 } bg-gray-100 dark:bg-gray-800 p-3 overflow-auto`}

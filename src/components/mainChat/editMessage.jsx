@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { addMessage } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
-import {MicrophoneIconDefault, InputIcon} from '@/icons'
 
 
 
@@ -49,7 +48,6 @@ const EditMessageForm = ({text, resetEditingMessageIndex}) => {
 
     return (
         <div className="edit-message-wrapper">
-        {/* ToggleTypeAsk */}
             {/* Input */}
             <div id="edit-message-input" className="edit-message-container">
                 <textarea

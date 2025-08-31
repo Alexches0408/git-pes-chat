@@ -13,7 +13,10 @@ export const fetchAPI = createAsyncThunk(
         });
   
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Ошибка запроса');
+        if (!res.ok) {
+            const errorMessage = data?.detail?.error || data?.message || 'Ошибка запроса';
+            throw new Error(errorMessage);
+          }
   
         return {data, target};
       } catch (error) {
@@ -133,6 +136,9 @@ export const gitChatSlice = createSlice({
           .addCase(fetchAPI.rejected, (state, action) => {
             state.loading = false
             state.error = action.payload
+            if (action.payload === "has not token") {
+                console.log("Сейчас выставим все как надо");
+              }
           })
       },
 });

@@ -17,3 +17,4 @@ export * from './sidebar';
 export * from './theme';
 export * from './update';
 export * from './plus';
+export * from './MobileSideBarIcon'

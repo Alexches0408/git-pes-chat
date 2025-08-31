@@ -6,12 +6,12 @@ import Mascot3DBase from '@/components/Mascot3DBase';
 import InputMessageForm from "@/components/mainChat/inputMessage";
 import EditMessageForm from "@/components/mainChat//editMessage";
 import MobileSideBar from "@/components/SideBar/MobileSideBar";
-import { toggleChat, toggleGitCoine, toggleProfile } from "../../features/gitChat/gitSlice";
+import { toggleChat, fetchAPI, clearCurrentChat } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
 import logo from "@/assets/icons/logo.png";
 
 // Import of Icons
-import {MSideBarIcon, CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon, SearchIconDefault} from '@/icons'
+import {MNewChatIcon, MSideBarIcon, CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon, SearchIconDefault} from '@/icons'
 
 
 
@@ -42,16 +42,28 @@ const MainChatWindow = () => {
     };
   
     const copyToClipboard = (text) => {
-        navigator.clipboard.writeText(text)
+        navigator.clipboard.writeText(text); 
     };
-    
 
+    const createChat = () => {
+        dispatch(clearCurrentChat());
+        dispatch(fetchAPI({
+            endpoint: 'list',
+            headers:{"user-id": userId,},
+            method: 'GET',
+            target: 'chatHistory'
+        }))
+    }
+    
 
     return(
         <motion.div>
             {/* SideBar */}
             <div id="mob-sidebar-wrapper">
                 <MobileSideBar open={openMobileSB} onClose={() => setOpenMobileSB(false)} />
+            </div>
+            <div className={`mob-new-chat-btn ${!openMobileSB && 'mob-new-chat-btn-open'}`}>
+                <MNewChatIcon onClick={() => createChat()}/>
             </div>
             {/* Chat */}
             <div className="relative flex-1 flex flex-col overflow-hidden" id="MainChat-Window">

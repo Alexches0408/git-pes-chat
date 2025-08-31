@@ -96,3 +96,17 @@
     outline: none;
   }
 
+  
+@media (max-width: 768px) {
+  #without-tokens-window {
+    width: 88vw;
+    padding: 6vw;
+  }
+
+  #without-tokens-body {
+    width: 100%;
+    padding: 0;
+    max-height: 90vh;
+  }
+}
+

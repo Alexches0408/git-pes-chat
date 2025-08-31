@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { addMessage, setCurrentChatId, fetchAPI, setTokens } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
@@ -68,6 +68,17 @@ const InputMessageForm = () => {
         }
     };
 
+        const [isSmall, setIsSmall] = useState(false);
+      
+        useEffect(() => {
+          const mediaQuery = window.matchMedia("(max-width: 640px)");
+          setIsSmall(mediaQuery.matches);
+      
+          const handler = (e) => setIsSmall(e.matches);
+          mediaQuery.addListener(handler);
+      
+        }, []);
+
     return (
         <div id="chat-input-main">
         {/* ToggleTypeAsk */}
@@ -82,7 +93,7 @@ const InputMessageForm = () => {
                     onClick={() => setQuestionType("general")}
                     className={`AGtext toggle-type ${questionType === "general"? "toggle-type-active": ""}`}
                 >
-                    Вопрос общего характера
+                    {isSmall ? "Обший вопрос" : "Вопрос общего характера"}
                 </button>
             </div>
             {/* Input */}

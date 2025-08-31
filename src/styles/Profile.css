@@ -77,3 +77,27 @@
     color: #fff  !important;
     background-color: #A83433  !important;
 }
+
+@media (max-width: 768px) {
+    #profile-window {
+      width: 88vw;
+      padding: 6vw;
+    }
+
+    #profile-head {
+        width: 100%;
+        padding: 0;
+        margin-bottom: 6vw;
+    }
+  
+    #profile-main {
+      width: 100%;
+      padding: 0;
+      max-height: 90vh;
+    }
+
+
+    .profile-main-row {
+        width: 100%;
+    }
+  }

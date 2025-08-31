@@ -32,9 +32,7 @@ export const gitChatSlice = createSlice({
         chatCurrent:[],
         currentChatId: null,
         favoritesByChatId:{},
-        
-
-
+        noTokens: false,
         isOpen: true,
         sidebarOpen: false,
         darkMode: false,
@@ -119,6 +117,9 @@ export const gitChatSlice = createSlice({
         setChatHistory: (state, action) => {
             state.chatHistory = action.payload; 
         },
+        setNoTokens: (state,action) => {
+            state.noTokens = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -137,13 +138,16 @@ export const gitChatSlice = createSlice({
             state.loading = false
             state.error = action.payload
             if (action.payload === "has not token") {
-                console.log("Сейчас выставим все как надо");
+                state.noTokens = true;
               }
           })
       },
 });
 
 
-export const { addMessage, toggleChat, toggleTheme, toggleSidebar, clearCurrentChat, loadChatHistory, loadChat, setCurrentChatId, deleteChat, toggleFavoriteMessage, renameChat, editChatCurrentMessage, toggleGitCoine, toggleProfile, setUser, setTokens, setChatHistory } = gitChatSlice.actions
+export const { addMessage, toggleChat, toggleTheme, toggleSidebar, 
+    clearCurrentChat, loadChatHistory, loadChat, setCurrentChatId, 
+    deleteChat, toggleFavoriteMessage, renameChat, editChatCurrentMessage, 
+    toggleGitCoine, toggleProfile, setUser, setTokens, setChatHistory, setNoTokens } = gitChatSlice.actions
 
 export default gitChatSlice.reducer

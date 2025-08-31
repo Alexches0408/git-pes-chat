@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+.without-tokens-AGh4 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;     
+    font-size: 16px;
+    line-height: 20px;
+    color: #363B49;
+  }
+
+.dark .without-tokens-AGh4{
+    color: #C9D1D9;
+}
+  
+
+.without-tokens-AGtext {
+    font-family: 'Inter';
+    font-weight: 400;       
+    font-size: 16px;
+    line-height: 24px;      
+    color: #363B49;
+  }
+  
+  .dark .without-tokens-AGtext{
+    color: #C9D1D9;
+  }
+  
+  .without-tokens-AGmenuchat {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;     
+    font-size: 16px;
+    line-height: 20px;
+
+  }
+  
+  #without-tokens-window {
+      position: relative;
+      width: 480px;    
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+
+  #without-tokens-head {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+  }
+
+  #without-tokens-body {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+  }
+
+  .wt-logo {
+    color: blue;
+    margin-bottom: 20px;
+  }
+
+  #without-tokens-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wt-give-coins-btn {
+    background-color: #708AB9;
+    color: #FFF;
+    width: 100%;
+    height: 40px;
+    border-radius: 12px;
+    outline: none;
+  }
+
+  .wt-not-interst-btn {
+    background-color: transparent;
+    color: #708AB9;
+    width: 100%;
+    height: 40px;
+    border-radius: 12px;
+    outline: none;
+  }
+
+  .wt-give-coins-btn:hover,
+  .wt-not-interst-btn:hover {
+    outline: none;
+  }
+
+  .wt-not-interst-btn:hover {
+    border: 1px solid #708AB9;
+  }
+
+  .wt-give-coins-btn:focus,
+  .wt-not-interst-btn:focus {
+    outline: none;
+  }
+

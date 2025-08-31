@@ -5,6 +5,7 @@ import SideBarClose from "@/components/SideBar/SideBarClose";
 import MainChatWindow from "@/components/mainChat/MainChatWindow";
 import Profile from "@/components/Profile/ProfileWindow";
 import GitCoine from "@/components/GitCoine/GitCoineWindow";
+import WithoutTokens from "@/components/mainChat/WithoutTokens";
 import { useSelector, useDispatch } from 'react-redux'
 import '@/styles/ChatWindow.css';
 
@@ -16,6 +17,7 @@ const ChatWindow = () => {
   const profileModeOpen = useSelector((state) => state.gitChat.profileMode)
   const gitCoineModeOpen = useSelector((state) => state.gitChat.gitCoinMode)
   const darkMode = useSelector((state) => state.gitChat.darkMode);
+  const noTokens = useSelector((state) => state.gitChat.noTokens);
 
   useEffect(() => {
     if (darkMode) {
@@ -127,7 +129,7 @@ const ChatWindow = () => {
             </div>
         
             {/* Chat */}
-            {profileModeOpen ? <Profile/> : (gitCoineModeOpen ? <GitCoine/> : <MainChatWindow/>)}
+            {profileModeOpen ? <Profile/> : (gitCoineModeOpen ? <GitCoine/> : (noTokens ? <WithoutTokens/> : <MainChatWindow/>))}
         </motion.div>
     </div>
   );

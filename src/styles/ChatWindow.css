@@ -218,6 +218,10 @@ html {
   flex-direction: column;
 }
 
+.chat-messages-btm-block {
+  display: none;
+}
+
 .edit-textarea {
   width: 80%;
   height: 32px;
@@ -574,6 +578,12 @@ html {
 
   #chat-body {
     padding-right:2vw;
+    max-height: calc(96vh - 320px);
+  }
+
+  #chat-messages {
+    height: calc(96vh - 320px);
+    padding-bottom: 0;
   }
 
   .user-message,
@@ -581,9 +591,30 @@ html {
     width: 80vw;
   }
 
+  .chat-messages-btm-block {
+    display: block;
+    background-color: transparent;
+  }
+
+  .chat-messages-grad {
+    position: fixed;
+    width: 96vw;
+    margin-right: 2vw;
+    height: 40px;
+    bottom:219px;
+  } 
+
+  #chat-input-main {
+    position: fixed;
+    width: 96vw;
+    margin-right: 2vw;
+    height: 200px;
+  }
+
   #chat-input {
     padding: 3%;
     width: 94%;
+    height: 130px;
   }
 
   #input-icons {
@@ -595,6 +626,11 @@ html {
     position: relative;
     right: -45%;
     top: -35%;
+  }
+
+  .tooltip-container {
+    width: 100%;
+    justify-content: space-evenly;
   }
 
 }

@@ -369,4 +369,22 @@
       opacity: 0.25;
       background-color: #000;
     }
+
+    #Sidebar-Window {
+      height: 100%;
+      width: 60vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #sb-main {
+      height: auto;
+    }
+
+    #sb-footer {
+      margin-bottom: 20px;
+    }
+
+
   }

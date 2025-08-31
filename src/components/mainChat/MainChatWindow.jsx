@@ -163,6 +163,7 @@ const MainChatWindow = () => {
                             </div>
                         );
                     })}
+                <div className="h-[50px] chat-messages-btm-block"></div>
                 </div>
                 <div className="chat-messages-grad" />
                 {/* Chat Input */}

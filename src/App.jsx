@@ -5,7 +5,7 @@ import './App.css';
 export default function App() {
   return (
     <div>
-      <header style={{ padding: 20 }}>
+      <header style={{ padding: 20, height: 'auto', width: '100%' }}>
         <h1>Тестовая страница</h1>
         <p>Это обычный сайт. Плагин с маскотом появится в углу.</p>
       </header>

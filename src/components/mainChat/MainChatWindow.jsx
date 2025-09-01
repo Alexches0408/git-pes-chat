@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense  } from "react";
 import { useSelector, useDispatch } from 'react-redux'
 import { motion } from "framer-motion";
 import { Canvas } from '@react-three/fiber';
 import Mascot3DBase from '@/components/Mascot3DBase';
 import InputMessageForm from "@/components/mainChat/inputMessage";
 import EditMessageForm from "@/components/mainChat//editMessage";
+import { MascotProvider } from "@/components/MascotProvider";
 import MobileSideBar from "@/components/SideBar/MobileSideBar";
 import { toggleChat, fetchAPI, clearCurrentChat } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
@@ -80,16 +81,27 @@ const MainChatWindow = () => {
                     <MSideBarIcon/>
                 </div>
                 <div className="flex items-center gap-2">
-                {/* {<Canvas 
-                    style={{ width: 60, height: 60, cursor: 'pointer' }}
-                    dpr={[1, 2]}
-                    shadows
-                    gl={{ antialias: true, physicallyCorrectLights: true }}
+                    <Canvas 
+                        style={{ width: 60, height: 60, cursor: 'pointer' }}
+                        dpr={[1, 2]}
+                        shadows
+                        gl={{ antialias: true, physicallyCorrectLights: true }}
+                        camera={{ position: [0, 5, 40], fov: 20 }}
                     >
-                    <ambientLight intensity={0.3} />
-                    <directionalLight intensity={1.2} position={[5, 5, 5]} />
-                    <Mascot3DBase onClick={() => dispatch(toggleChat())} />
-                </Canvas> } */}
+                        {/* Теперь MascotProvider внутри Canvas */}
+                        <MascotProvider>
+                        <ambientLight intensity={0.3} />
+                        <directionalLight intensity={1.2} position={[5, 5, 5]} />
+
+                        <Suspense fallback={null}>
+                            <Mascot3DBase 
+                                onClick={() => dispatch(toggleChat())} 
+                                position={[0, -20, 0]} 
+                                scale={0.6} 
+                            />
+                        </Suspense>
+                        </MascotProvider>
+                    </Canvas>
                     <span className='AGhead'>Гитпес</span>
                 </div>
                 <div id="toggle-chat-btn">

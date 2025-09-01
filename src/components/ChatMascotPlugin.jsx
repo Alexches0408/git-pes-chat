@@ -11,7 +11,9 @@ export default function ChatMascotPlugin() {
   const dispatch = useDispatch();
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div 
+      className={`${chatOpen ? 'plagin-open-chat' : 'plagin-close-chat'}`}  
+    >
       <Canvas 
         style={{ width: 100, height: 100, cursor: 'pointer' }}
         dpr={[1, 2]}

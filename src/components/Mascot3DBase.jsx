@@ -2,11 +2,13 @@ import React, { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import { useAnimations } from '@react-three/drei';
 import { useMascotAssets } from "./MascotProvider";
+import { useSelector } from 'react-redux'
 
 export default function Mascot3DBase({ onClick, scale = 1, position = [0, 0, 0] }) {
   const ref = useRef();
   const { mascot, materials } = useMascotAssets();
   const { actions } = useAnimations(mascot.animations, mascot);
+  const darkMode = useSelector((state)=>state.gitChat.darkMode);
 
   useEffect(() => {
     if (!mascot) return;
@@ -16,9 +18,9 @@ export default function Mascot3DBase({ onClick, scale = 1, position = [0, 0, 0] 
     mascot.traverse((child) => {
       if (child.isMesh) {
         if (child.name.toLowerCase().includes("eye")) {
-          child.material = materials.wteyesMaterial;
+          child.material = !darkMode ? materials.wteyesMaterial : materials.dteyesMaterial;
         } else {
-          child.material = materials.wtbodyMaterial;
+          child.material = !darkMode ? materials.wtbodyMaterial : materials.dtbodyMaterial;
         }
         child.castShadow = true;
         child.receiveShadow = true;

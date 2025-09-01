@@ -53,3 +53,28 @@ body {
 .dark #chat-wraper {
   background-color: #2A3036;
 }
+
+.plagin-close-chat {
+  position: fixed;
+  right: 40px;
+  top: 20vh;
+  width: 100px;
+  height: 100px;
+}
+
+
+.plagin-open-chat {
+  position: relative;
+}
+
+
+@media (max-width: 768px) {
+  .plagin-open-chat {
+    position: fixed; /* фиксированное положение */
+    top: 0;
+    left: 0;
+    width: 100vw; /* ширина всего окна */
+    height: 100vh;
+    overflow: hidden;
+  }
+}

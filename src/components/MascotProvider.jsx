@@ -25,6 +25,24 @@ export function MascotProvider({ children }) {
     height: `${import.meta.env.BASE_URL}textures/wteyes/Height.jpg`,
   });
 
+  const dttextures = useTexture({
+    base: `${import.meta.env.BASE_URL}textures/darktheme/BaseColor.jpg`,
+    metal: `${import.meta.env.BASE_URL}textures/darktheme/Metalness.jpg`,
+    rough: `${import.meta.env.BASE_URL}textures/darktheme/Roughness.jpg`,
+    normal: `${import.meta.env.BASE_URL}textures/darktheme/Normal.jpg`,
+    emissive: `${import.meta.env.BASE_URL}textures/darktheme/Emissive.jpg`,
+    height: `${import.meta.env.BASE_URL}textures/darktheme/Height.jpg`,
+  });
+
+  const dteyestextures = useTexture({
+    base: `${import.meta.env.BASE_URL}textures/dteyes/BaseColor.jpg`,
+    metal: `${import.meta.env.BASE_URL}textures/dteyes/Metalness.jpg`,
+    rough: `${import.meta.env.BASE_URL}textures/dteyes/Roughness.jpg`,
+    normal: `${import.meta.env.BASE_URL}textures/dteyes/Normal.jpg`,
+    emissive: `${import.meta.env.BASE_URL}textures/dteyes/Emissive.jpg`,
+    height: `${import.meta.env.BASE_URL}textures/dteyes/Height.jpg`,
+  });
+
 
   const materials = useMemo(() => {
     const wtbodyMaterial = new THREE.MeshStandardMaterial({
@@ -49,10 +67,34 @@ export function MascotProvider({ children }) {
         displacementScale: 0.05,
         emissive: new THREE.Color(0xffffff),
         emissiveIntensity: 0.5,
-      })
+      });
 
-    return { wtbodyMaterial, wteyesMaterial };
-  }, [wttextures, wteyestextures]);
+      const dtbodyMaterial = new THREE.MeshStandardMaterial({
+        map: dttextures.base,
+        metalnessMap: dttextures.metal,
+        roughnessMap: dttextures.rough,
+        normalMap: dttextures.normal,
+        emissiveMap: dttextures.emissive,
+        displacementMap: dttextures.height,
+        displacementScale: 0.05,
+        emissive: new THREE.Color(0xffffff),
+        emissiveIntensity: 0.5,
+      });
+  
+      const dteyesMaterial = new THREE.MeshStandardMaterial({
+          map: dteyestextures.base,
+          metalnessMap: dteyestextures.metal,
+          roughnessMap: dteyestextures.rough,
+          normalMap: dteyestextures.normal,
+          emissiveMap: dteyestextures.emissive,
+          displacementMap: dteyestextures.height,
+          displacementScale: 0.05,
+          emissive: new THREE.Color(0xffffff),
+          emissiveIntensity: 0.5,
+        });
+
+    return { wtbodyMaterial, wteyesMaterial, dtbodyMaterial, dteyesMaterial };
+  }, [wttextures, wteyestextures, dttextures, dteyestextures]);
 
   return (
     <MascotContext.Provider value={{ mascot, materials }}>

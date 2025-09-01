@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { toggleSidebar, toggleGitCoine, toggleProfile  } from '@/features/gitChat/gitSlice'
-import { clearCurrentChat, loadChat, deleteChat, renameChat, toggleTheme, setCurrentChatId, setChatHistory, fetchAPI } from "../../features/gitChat/gitSlice";
+import { clearCurrentChat, loadChat, renameChat, toggleTheme, setCurrentChatId, fetchAPI } from "../../features/gitChat/gitSlice";
 import SidebarContextMenu from "@/components/SideBar/SideBarContextMenu";
 import '@/styles/Sidebar.css';
 
@@ -86,8 +86,8 @@ export default function SideBarOpen() {
                     className={`new-chat-button AG16med ${!currentChatId ? 'new-chat-button-active':''}`}
                     >
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17.0001 9H1.00013" stroke={currentChatId ? "#708AB9":"#FFF"} stroke-width="1.5" stroke-linecap="round"/>
-                        <path d="M9 1V16.9999" stroke={currentChatId ? "#708AB9":"#FFF"} stroke-width="1.5" stroke-linecap="round"/>
+                        <path d="M17.0001 9H1.00013" stroke={currentChatId ? "#708AB9":"#FFF"} strokeWidth="1.5" strokeLinecap="round"/>
+                        <path d="M9 1V16.9999" stroke={currentChatId ? "#708AB9":"#FFF"} strokeWidth="1.5" strokeLinecap="round"/>
                         </svg>
                         <span>Новый чат</span>
                 </button>

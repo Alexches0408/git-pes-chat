@@ -47,7 +47,6 @@ const ChatWindow = () => {
             await fetchWithUser("user", "user");
             const tokenData = await fetchWithUser("user/token");
             dispatch(setTokens(tokenData.tokens));
-            await fetchWithUser("list", "list");
             return data.id;
           } catch (err) {
             console.error("createUser error:", err);
@@ -79,7 +78,7 @@ const ChatWindow = () => {
         await fetchWithUser("user", "user");
         const tokenData = await fetchWithUser("user/token");
         dispatch(setTokens(tokenData.tokens));
-        await fetchWithUser("list", "list");
+        await fetchWithUser("list", "chatHistory");
       } catch (err) {
         console.warn("userId невалидный, пересоздание:", err);
 
@@ -90,7 +89,7 @@ const ChatWindow = () => {
           await fetchWithUser("user", "user");
           const tokenData = await fetchWithUser("user/token");
           dispatch(setTokens(tokenData.tokens));
-          await fetchWithUser("list", "list");
+          await fetchWithUser("list", "chatHistory");
         } catch (err2) {
           console.error("Ошибка при повторных запросах:", err2);
         }

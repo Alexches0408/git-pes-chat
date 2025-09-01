@@ -71,30 +71,11 @@ export const gitChatSlice = createSlice({
                 chat.id === chatId ? { ...chat, title: newName } : chat
             );                        
         },
-        loadChatHistory: (state, action) => {
-            state.currentChatIndex = action.payload;
-            const chatIndex = action.payload;
-            const selectedChat = state.chatHistory[chatIndex];
-            if (selectedChat) {
-                state.chatCurrent = [...selectedChat.messages];
-            }   
-        },
         loadChat: (state, action) => {
             state.chatCurrent = action.payload.text;
         },
         setCurrentChatId: (state, action) => {
             state.currentChatId = action.payload;
-        },
-        deleteChat: (state, action) => {
-            const index = action.payload;
-            if (state.currentChatIndex === index) {
-                state.currentChatIndex = null;
-                state.chatCurrent = [];
-            } else if (state.currentChatIndex > index) {
-                state.currentChatIndex -=1;
-            }
-
-            state.chatHistory.splice(index,1);
         },
         toggleFavoriteMessage: (state, action) => {
             const {chatId, messageId} = action.payload;

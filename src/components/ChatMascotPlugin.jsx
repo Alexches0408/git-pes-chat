@@ -14,16 +14,15 @@ export default function ChatMascotPlugin() {
     <div>
       {!chatOpen && (
         <Canvas 
-          style={{ width: 300, height: 300, cursor: 'pointer' }}
+          style={{ width: 100, height: 100, cursor: 'pointer' }}
           dpr={[1, 2]}
           shadows
           gl={{ antialias: true, physicallyCorrectLights: true }}
+          camera={{ position: [0, 5, 40], fov: 20 }}
         >
           <ambientLight intensity={0.3} />
           <directionalLight intensity={1.2} position={[5, 5, 5]} />
-          <axesHelper args={[5]} />
-          <gridHelper args={[10, 10]} />
-          <Mascot3DBase onClick={() => dispatch(toggleChat())} />
+          <Mascot3DBase onClick={() => dispatch(toggleChat())} position={[0, -20, 0]} scale={0.6}/>
         </Canvas>
       )}
 

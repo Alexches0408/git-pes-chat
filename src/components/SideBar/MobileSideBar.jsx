@@ -2,12 +2,12 @@ import React, {useState, useRef, useEffect} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { motion, AnimatePresence } from "framer-motion";
 import { useSwipeable } from "react-swipeable";
-import { toggleSidebar, toggleGitCoine, toggleProfile  } from '@/features/gitChat/gitSlice'
-import { clearCurrentChat, loadChat, deleteChat, renameChat, toggleTheme, setCurrentChatId, setChatHistory, fetchAPI } from "../../features/gitChat/gitSlice";
+import { toggleGitCoine, toggleProfile  } from '@/features/gitChat/gitSlice'
+import { loadChat,  renameChat, toggleTheme, setCurrentChatId, fetchAPI } from "../../features/gitChat/gitSlice";
 import SidebarContextMenu from "@/components/SideBar/SideBarContextMenu";
 import '@/styles/Sidebar.css';
 
-import {SidebarIconOpen, GitCoinIconDefault, ProfileIconDefault, BookmarkSidebarIconDefault, HistoryChatIconDefault} from '../../icons'
+import { GitCoinIconDefault, ProfileIconDefault, BookmarkSidebarIconDefault, HistoryChatIconDefault} from '../../icons'
 
 export default function MobileSideBar({open, onClose}) {
     const chatHistory = useSelector((state) => state.gitChat.chatHistory)
@@ -36,28 +36,16 @@ export default function MobileSideBar({open, onClose}) {
         dispatch(renameChat({chatId: editingChatId, newName:editingChatName}));
         setEditingChatId(null);
     }
-
-     const createChat = () => {
-         dispatch(clearCurrentChat());
-         dispatch(fetchAPI({
-             endpoint: 'list',
-             headers:{"user-id": userId,},
-             method: 'GET',
-             target: 'chatHistory'
-         }))
-     }
+    
 
     const loadSelectedChat = async (id) => {
         try {
-            const res = await fetch(`http://localhost:8000/chat/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "user-id": userId,
-            },
-            });
-            if (!res.ok) throw new Error("Ошибка запроса " + endpoint);
-            const data = await res.json();
+            const response = await dispatch(fetchAPI({
+                endpoint:`chat/${id}`,
+                headers:{"user-id": userId,},
+                method: 'GET',
+            })).unwrap();
+            const data = response.data;
             dispatch(loadChat(data));
             dispatch(setCurrentChatId(id));
             return await data;

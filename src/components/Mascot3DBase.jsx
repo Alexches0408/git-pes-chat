@@ -51,4 +51,3 @@ export default function Mascot3DBase({ onClick, scale = 1, position = [0, 0, 0] 
     </group>
   );
 }
-

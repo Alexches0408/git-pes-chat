@@ -81,14 +81,13 @@ const MainChatWindow = () => {
                     <MSideBarIcon/>
                 </div>
                 <div className="flex items-center gap-2">
-                    <Canvas 
+                    {/* <Canvas 
                         style={{ width: 60, height: 60, cursor: 'pointer' }}
                         dpr={[1, 2]}
                         shadows
                         gl={{ antialias: true, physicallyCorrectLights: true }}
                         camera={{ position: [0, 5, 40], fov: 20 }}
                     >
-                        {/* Теперь MascotProvider внутри Canvas */}
                         <MascotProvider>
                         <ambientLight intensity={0.3} />
                         <directionalLight intensity={1.2} position={[5, 5, 5]} />
@@ -101,7 +100,7 @@ const MainChatWindow = () => {
                             />
                         </Suspense>
                         </MascotProvider>
-                    </Canvas>
+                    </Canvas> */}
                     <span className='AGhead'>Гитпес</span>
                 </div>
                 <div id="toggle-chat-btn">

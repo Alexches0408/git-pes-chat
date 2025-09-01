@@ -14,14 +14,13 @@ export default function ChatMascotPlugin() {
     <div 
       className={`${chatOpen ? 'plagin-open-chat' : 'plagin-close-chat'}`}  
     >
-      <Canvas 
-        style={{ width: 100, height: 100, cursor: 'pointer' }}
+      {/* <Canvas 
+        style={{ width: 1200, height: 1200, cursor: 'pointer' }}
         dpr={[1, 2]}
         shadows
         gl={{ antialias: true, physicallyCorrectLights: true }}
         camera={{ position: [0, 5, 40], fov: 20 }}
       >
-        {/* Теперь MascotProvider внутри Canvas */}
         <MascotProvider>
           <ambientLight intensity={0.3} />
           <directionalLight intensity={1.2} position={[5, 5, 5]} />
@@ -36,7 +35,7 @@ export default function ChatMascotPlugin() {
             )}
           </Suspense>
         </MascotProvider>
-      </Canvas>
+      </Canvas> */}
 
       {/* Окно чата */}
       {chatOpen && (

@@ -48,15 +48,12 @@ export default function SideBarOpen() {
 
     const loadSelectedChat = async (id) => {
         try {
-            const res = await fetch(`http://localhost:8000/chat/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "user-id": userId,
-            },
-            });
-            if (!res.ok) throw new Error("Ошибка запроса " + endpoint);
-            const data = await res.json();
+            const response = await dispatch(fetchAPI({
+                endpoint:`chat/${id}`,
+                headers:{"user-id": userId,},
+                method: 'GET',
+            })).unwrap();
+            const data = response.data;
             dispatch(loadChat(data));
             dispatch(setCurrentChatId(id));
             return await data;

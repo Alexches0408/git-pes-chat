@@ -9,7 +9,7 @@ import WithoutTokens from "@/components/mainChat/WithoutTokens";
 import { useSelector, useDispatch } from 'react-redux'
 import '@/styles/ChatWindow.css';
 
-import { setUser, setTokens, setChatHistory } from "@/features/gitChat/gitSlice";
+import { setTokens, fetchAPI } from "@/features/gitChat/gitSlice";
 
 const ChatWindow = () => {
   const dispatch = useDispatch()
@@ -29,40 +29,41 @@ const ChatWindow = () => {
 
   useEffect(() => {
     const initUser = async () => {
-      const apiBase = "http://localhost:8000"; 
       let userId = localStorage.getItem("user-id");
 
       const createUser = async () => {
         try {
-          const res = await fetch(`${apiBase}/users`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              name: "TestUser",
-              email: `test+${Date.now()}@user.com`,
-            }),
-          });
-          if (!res.ok) throw new Error("Ошибка при создании пользователя");
-          const data = await res.json();
-          localStorage.setItem("user-id", data.id);
-          return data.id;
-        } catch (err) {
-          console.error("createUser error:", err);
-          return null;
-        }
-      };
+            const response = await dispatch(fetchAPI({
+                endpoint:`users`,
+                method: 'POST',
+                body: {
+                  name: "TestUser",
+                  email: `test+${Date.now()}@user.com`,
+                },
+            })).unwrap();
+            const data = response.data;
+            userId = data.id
+            localStorage.setItem("user-id", userId);
+            await fetchWithUser("user", "user");
+            const tokenData = await fetchWithUser("user/token");
+            dispatch(setTokens(tokenData.tokens));
+            await fetchWithUser("list", "list");
+            return data.id;
+          } catch (err) {
+            console.error("createUser error:", err);
+            return null;
+          }
+        };
 
-      const fetchWithUser = async (endpoint, uid) => {
+      const fetchWithUser = async (endpoint, target='') => {
         try {
-          const res = await fetch(`${apiBase}${endpoint}`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "user-id": uid,
-            },
-          });
-          if (!res.ok) throw new Error("Ошибка запроса " + endpoint);
-          return await res.json();
+          const response = await dispatch(fetchAPI({
+              endpoint: endpoint,
+              method: 'GET',
+              headers:{"user-id": userId,},
+              target:target,
+          })).unwrap();
+          return response.data;
         } catch (err) {
           console.error(`fetchWithUser ${endpoint} error:`, err);
           throw err;
@@ -75,17 +76,10 @@ const ChatWindow = () => {
       }
 
       try {
-        // /user → name, email
-        const userData = await fetchWithUser("/user", userId);
-        dispatch(setUser({ name: userData.name, email: userData.email }));
-
-        // /user/token → tokens
-        const tokenData = await fetchWithUser("/user/token", userId);
+        await fetchWithUser("user", "user");
+        const tokenData = await fetchWithUser("user/token");
         dispatch(setTokens(tokenData.tokens));
-
-        const chatHistory = await fetchWithUser("/list", userId);
-        dispatch(setChatHistory(chatHistory));
-
+        await fetchWithUser("list", "list");
       } catch (err) {
         console.warn("userId невалидный, пересоздание:", err);
 
@@ -93,20 +87,15 @@ const ChatWindow = () => {
         if (!newId) return;
 
         try {
-          const userData = await fetchWithUser("/user", newId);
-          dispatch(setUser({ name: userData.name, email: userData.email }));
-
-          const tokenData = await fetchWithUser("/user/token", newId);
+          await fetchWithUser("user", "user");
+          const tokenData = await fetchWithUser("user/token");
           dispatch(setTokens(tokenData.tokens));
-
-          const chatHistory = await fetchWithUser("/list", newId);
-          dispatch(setChatHistory(chatHistory));
+          await fetchWithUser("list", "list");
         } catch (err2) {
           console.error("Ошибка при повторных запросах:", err2);
         }
       }
     };
-
     initUser();
   }, [dispatch]);
 

@@ -1,34 +1,44 @@
-import React, { useState } from 'react';
+import { MascotProvider } from "./MascotProvider";
+import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Mascot3DBase from './Mascot3DBase';
-import Mascot3D2file from './Mascot3D2file'; // Импортируем Mascot3D2file
 import ChatWindow from './ChatWindow';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import { toggleChat } from "../features/gitChat/gitSlice";
 
 export default function ChatMascotPlugin() {
-  const chatOpen = useSelector((state) => state.gitChat.isOpen)
-  const dispatch = useDispatch()
+  const chatOpen = useSelector((state) => state.gitChat.isOpen);
+  const dispatch = useDispatch();
 
   return (
-    <div>
-      {!chatOpen && (
-        <Canvas 
-          style={{ width: 100, height: 100, cursor: 'pointer' }}
-          dpr={[1, 2]}
-          shadows
-          gl={{ antialias: true, physicallyCorrectLights: true }}
-          camera={{ position: [0, 5, 40], fov: 20 }}
-        >
+    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+      <Canvas 
+        style={{ width: 100, height: 100, cursor: 'pointer' }}
+        dpr={[1, 2]}
+        shadows
+        gl={{ antialias: true, physicallyCorrectLights: true }}
+        camera={{ position: [0, 5, 40], fov: 20 }}
+      >
+        {/* Теперь MascotProvider внутри Canvas */}
+        <MascotProvider>
           <ambientLight intensity={0.3} />
           <directionalLight intensity={1.2} position={[5, 5, 5]} />
-          <Mascot3DBase onClick={() => dispatch(toggleChat())} position={[0, -20, 0]} scale={0.6}/>
-        </Canvas>
-      )}
 
+          <Suspense fallback={null}>
+            {!chatOpen && (
+              <Mascot3DBase 
+                onClick={() => dispatch(toggleChat())} 
+                position={[0, -20, 0]} 
+                scale={0.6} 
+              />
+            )}
+          </Suspense>
+        </MascotProvider>
+      </Canvas>
+
+      {/* Окно чата */}
       {chatOpen && (
         <>
-          {/* Затемняющий фон */}
           <div
             style={{
               position: 'fixed',
@@ -37,13 +47,11 @@ export default function ChatMascotPlugin() {
               width: '100vw',
               height: '100vh',
               backgroundColor: 'rgba(0, 0, 0, 0.5)',
-              zIndex: 999, // ниже чата, но выше остального
-              pointerEvents: 'auto' // блокирует клики по фону
+              zIndex: 999,
+              pointerEvents: 'auto'
             }}
-            onClick={() => dispatch(toggleChat())} // Закрытие при клике вне чата (по желанию)
+            onClick={() => dispatch(toggleChat())}
           />
-
-          {/* Окно чата */}
           <div
             style={{
               position: 'fixed',

@@ -2,6 +2,7 @@ import React from 'react';
 import ChatMascotPlugin from './components/ChatMascotPlugin';
 import './App.css';
 
+
 export default function App() {
   return (
     <div>

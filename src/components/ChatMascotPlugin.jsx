@@ -9,59 +9,70 @@ import wh_dog from "@/assets/images/git_dog_wh.png";
 import dr_dog from "@/assets/images/git_dog_dr.png"; 
 
 
+
 export default function ChatMascotPlugin() {
   const chatOpen = useSelector((state) => state.gitChat.isOpen);
   const dispatch = useDispatch();
   const darkMode = useSelector((state)=>state.gitChat.darkMode);
   const [isMobile, setIsMobile] = useState(false);
       
+
+  const phrases = [
+    "Генерирую новые фрагменты кода по описанию",
+    "Читаю и подробно объясняю чужой код",
+    "Провожу lightning-code-review и нахожу потенциальные баги",
+    "Пишу тесты и документацию, пока ты пьёшь кофе",
+    "Контекстное автодополнение слов, строк и целых функций!",
+    "смарт-блоки кода, которые ложатся в нужное место",
+    "Моментальные синтаксические советы, чтобы ошибки даже не появлялись",
+  ];
+
+
+  const [currentPhrase, setCurrentPhrase] = useState(phrases[0]);
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 640px)");
     setIsMobile(mediaQuery.matches);
-
     const handler = (e) => setIsMobile(e.matches);
     mediaQuery.addListener(handler);
 
+    const interval = setInterval(() => {
+      const randomIndex = Math.floor(Math.random() * phrases.length);
+      setCurrentPhrase(phrases[randomIndex]);
+    }, 30000);
+
+    return () => {
+      mediaQuery.removeListener(handler);
+      clearInterval(interval);
+    };
   }, []);
 
   return (
     <div 
-      className={`${chatOpen ? 'plagin-open-chat' : 'plagin-close-chat'}`}  
-    >
-      {isMobile ? 
-          <div onClick={() => dispatch(toggleChat())} style={{ cursor: 'pointer' }}>
-              <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={80} height={80} />
-          </div> : 
-          <div onClick={() => dispatch(toggleChat())} style={{ cursor: 'pointer' }}>
-              <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={80} height={80} />
+      className={`${chatOpen ? 'plagin-open-chat' : 'plagin-close-chat'} ${isMobile && 'plagin-chat-mobile'}`}  
+    > 
+      {!chatOpen && (
+        <>
+          {isMobile &&
+            <div onClick={() => dispatch(toggleChat())} style={{ cursor: 'pointer' }}>
+                <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={50} height={50} />
+            </div> }
+        {!isMobile && (
+          <>
+          <div className="chat-mascot-container">
+            {/* Блок с фразой */}
+            <div
+              className="phrase-bubble"
+            >
+              {currentPhrase}
+            </div> 
+            <div onClick={() => dispatch(toggleChat())} style={{ cursor: 'pointer' }}>
+                <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={80} height={80} />
+            </div>
           </div>
-      }
-      {/* {isMobile ? 
-      <div>
-      </div> :
-      <Canvas 
-        style={{ width: 700, height: 700, cursor: 'pointer' }}
-        dpr={[1, 2]}
-        shadows
-        gl={{ antialias: true, physicallyCorrectLights: true }}
-        camera={{ position: [0, 15, 100], fov: 20 }}
-        onClick={() => dispatch(toggleChat())} 
-      >
-        <MascotProvider>
-          <ambientLight intensity={0.3} />
-          <directionalLight intensity={1.2} position={[5, 5, 5]} />
-
-          <Suspense fallback={null}>
-            {!chatOpen && (
-              <Mascot3DBase 
-                position={[0, -47, 0]} 
-                scale={0.9} 
-              />
-            )}
-          </Suspense>
-        </MascotProvider>
-      </Canvas>
-      }  */}
+            </>)}
+            </>       
+      )}
 
       {/* Окно чата */}
       {chatOpen && (

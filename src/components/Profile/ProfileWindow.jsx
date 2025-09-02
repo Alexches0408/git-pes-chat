@@ -22,6 +22,11 @@ const Profile = ()=> {
         dispatch(setChatHistory());
     }
 
+    const logOut = () => {
+        localStorage.removeItem("user-id"); 
+        window.location.reload(); 
+      };
+
     return (
         <div id="profile-window">
             <div id="profile-head">
@@ -71,7 +76,8 @@ const Profile = ()=> {
                 </div>
                 <div className='profile-main-row ProfileAGtext'>
                     <div>Выйти из профиля</div>
-                    <button 
+                    <button
+                        onClick={()=>{logOut()}} 
                         className='main-profile-button ProfileAGtext'
                         style={{  
                             background: "none",

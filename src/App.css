@@ -56,15 +56,50 @@ body {
 
 .plagin-close-chat {
   position: fixed;
-  right: 10vw;
-  top: 20vh;
+  right: 400px;
+  top: 10vh;
   width: 100px;
   height: 100px;
+}
+
+.plagin-close-chat.plagin-chat-mobile {
+  right: 5vw;
+  top: 5vh;
 }
 
 
 .plagin-open-chat {
   position: relative;
+}
+
+.chat-mascot-container {
+  display: flex;
+  width: 400px;
+  align-items: center;
+  gap: 12px;
+}
+
+
+
+.phrase-bubble {
+  width: 260px;    
+  height: 40px;  
+  position: relative;
+  background-color: white;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px 14px;
+  bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.3;
+  overflow: hidden; 
+  color: #363B49
 }
 
 

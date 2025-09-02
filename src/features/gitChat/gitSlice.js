@@ -25,6 +25,15 @@ export const fetchAPI = createAsyncThunk(
     }
   )
 
+const getInitialTheme = () => {
+if (typeof document !== "undefined") {
+    const theme = document.documentElement.dataset.theme;
+    return theme === "dark";
+}
+return false;
+};
+  
+
 export const gitChatSlice = createSlice({   
     name: 'gitChat',
     initialState: {
@@ -33,9 +42,9 @@ export const gitChatSlice = createSlice({
         currentChatId: null,
         favoritesByChatId:{},
         noTokens: false,
-        isOpen: true,
+        isOpen: false,
         sidebarOpen: false,
-        darkMode: false,
+        darkMode: getInitialTheme(),
         profileMode:false,
         gitCoinMode:false,
 
@@ -51,7 +60,12 @@ export const gitChatSlice = createSlice({
         },
         toggleTheme: (state) => {
             state.darkMode = !state.darkMode;
+            document.documentElement.dataset.theme = state.darkMode ? "dark" : "light";
         },
+        setTheme: (state, action) => {
+            state.darkMode = action.payload;
+            document.documentElement.dataset.theme = action.payload ? "dark" : "light";
+          },
         toggleSidebar: (state) => {
             state.sidebarOpen = !state.sidebarOpen;
         },
@@ -126,7 +140,7 @@ export const gitChatSlice = createSlice({
 });
 
 
-export const { addMessage, toggleChat, toggleTheme, toggleSidebar, 
+export const { addMessage, toggleChat, toggleTheme, toggleSidebar, setTheme,
     clearCurrentChat, loadChatHistory, loadChat, setCurrentChatId, 
     deleteChat, toggleFavoriteMessage, renameChat, editChatCurrentMessage, 
     toggleGitCoine, toggleProfile, setUser, setTokens, setChatHistory, setNoTokens } = gitChatSlice.actions

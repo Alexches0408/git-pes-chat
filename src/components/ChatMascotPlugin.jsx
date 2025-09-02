@@ -5,10 +5,14 @@ import Mascot3DBase from './Mascot3DBase';
 import ChatWindow from './ChatWindow';
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleChat } from "../features/gitChat/gitSlice";
+import wh_dog from "@/assets/images/git_dog_wh.png"; 
+import dr_dog from "@/assets/images/git_dog_dr.png"; 
+
 
 export default function ChatMascotPlugin() {
   const chatOpen = useSelector((state) => state.gitChat.isOpen);
   const dispatch = useDispatch();
+  const darkMode = useSelector((state)=>state.gitChat.darkMode);
   const [isMobile, setIsMobile] = useState(false);
       
   useEffect(() => {
@@ -24,6 +28,14 @@ export default function ChatMascotPlugin() {
     <div 
       className={`${chatOpen ? 'plagin-open-chat' : 'plagin-close-chat'}`}  
     >
+      {isMobile ? 
+          <div onClick={() => dispatch(toggleChat())} style={{ cursor: 'pointer' }}>
+              <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={80} height={80} />
+          </div> : 
+          <div onClick={() => dispatch(toggleChat())} style={{ cursor: 'pointer' }}>
+              <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={80} height={80} />
+          </div>
+      }
       {/* {isMobile ? 
       <div>
       </div> :

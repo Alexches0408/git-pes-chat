@@ -10,7 +10,8 @@ import { MascotProvider } from "@/components/MascotProvider";
 import MobileSideBar from "@/components/SideBar/MobileSideBar";
 import { toggleChat, fetchAPI, clearCurrentChat } from "../../features/gitChat/gitSlice";
 import '@/styles/ChatWindow.css';
-import logo from "@/assets/icons/logo.png";
+import wh_dog from "@/assets/images/git_dog_wh.png"; 
+import dr_dog from "@/assets/images/git_dog_dr.png"; 
 
 // Import of Icons
 import {MNewChatIcon, MSideBarIcon, CopyIcon, EditIcon, UpdateIcon, LikeIcon, DislikeIcon, BookMarkChatIcon, ShareIcon, CloseIcon, SearchIconDefault} from '@/icons'
@@ -23,12 +24,14 @@ const MainChatWindow = () => {
     const dispatch = useDispatch()
     const chatCurrent = useSelector((state) => state.gitChat.chatCurrent)
     const chatHistory=useSelector((state) => state.gitChat.chatHistory)
+    const darkMode = useSelector((state)=>state.gitChat.darkMode);
     const [editingMessageIndex, setEditingMessageIndex] = useState(null);
     const [feedMessageIndex, setFeedMessageIndex] = useState(null);
     const [feedback, setFeedback] = useState({}); 
     const [searchQuery, setSearchQuery] = useState("");
     const [openMobileSB, setOpenMobileSB] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
     
     const highlightText = (text, query) => {
         if (!query) return text;
@@ -96,8 +99,10 @@ const MainChatWindow = () => {
                 <div className="flex items-center gap-2">
                     {isMobile ? 
                         <div>
+                            <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={30} height={30} />
                         </div> : 
                         <div>
+                            <img src={darkMode? dr_dog: wh_dog} alt="Логотип" width={30} height={30} />
                         </div>
                     }
                     {/* <Canvas 

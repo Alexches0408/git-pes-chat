@@ -56,8 +56,8 @@ body {
 
 .plagin-close-chat {
   position: fixed;
-  right: 100vw;
-  top: -4vh;
+  right: 10vw;
+  top: 20vh;
   width: 100px;
   height: 100px;
 }

@@ -33,7 +33,7 @@ export default function Mascot3DBase({ onClick, scale = 1, position = [0, 0, 0] 
         actions[keys[0]].reset().fadeIn(1).play();
       }
     }
-  }, [mascot, materials, scale, actions]);
+  }, [mascot, materials, scale]);
 
   useFrame(({ clock }) => {
     if (ref.current) {

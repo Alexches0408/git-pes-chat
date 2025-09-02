@@ -533,6 +533,117 @@ html {
   border-top: 7px solid #2e2e2e;
 }
 
+#all-background-for-feed-popup {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  opacity: 0.25;
+  z-index: 1500;
+}
+
+#feedback-popup {
+  position: fixed !important;
+  display: flex;
+  flex-direction: column;
+  width: 480px;
+  height: 290px;
+  z-index: 2000;
+  padding: 20px;
+  gap: 20px;
+  background-color: #FFF;
+  border: #EAEEF1 solid 1px;
+  border-radius: 12px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dark #feedback-popup {
+  background-color: #24282C;
+  border: none;
+} 
+
+#feed-head {
+  display: flex;
+  justify-content: space-between;
+  color: #363B49;
+}
+
+.dark #feed-head {
+  color: #C9D1D9;
+}
+
+.feed-buttons-block {
+  display: flex;
+  align-content: space-between;
+  height: 60px;
+  flex-wrap: wrap;
+}
+
+.feed-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  margin-right: 12px;
+  padding: 8px 12px;
+  color: #707D8F;
+  border-radius: 12px;
+  border: none;
+  background-color: #EAEEF1;
+  float: left;
+}
+
+.dark .feed-button {
+  color: #8C929C;
+  background-color: #475260;
+}
+
+.feed-button:focus {
+  outline: none;
+  border: none;
+}
+
+.feed-button:hover,
+.feed-button:active,
+.feed-button.sel {
+  color: #FFF !important;
+  background-color: #708AB9 !important;
+  outline: none !important;
+  border: none;
+}
+
+.feed-text-area {
+  width: 440px;
+  height: 78px;
+  resize: none;
+  padding: 10px 20px;
+  border: 1px solid #708AB9;
+  border-radius: 12px;
+  margin-left: auto;
+  margin-bottom: 12px;
+  background-color: transparent;
+  outline: none; 
+  color: #363B49;
+}
+
+.dark .feed-text-area {
+  color: #C9D1D9;
+}
+
+.feed-text-area::-webkit-scrollbar {
+  width: 2px; 
+}
+
+.feed-text-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.feed-text-area::-webkit-scrollbar-thumb {
+  background-color: #D0D9DF;
+  border-radius: 2px;
+}
+
 
 @media (max-width: 768px) {
   #chat-wraper {

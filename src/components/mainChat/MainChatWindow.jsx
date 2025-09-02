@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { Canvas } from '@react-three/fiber';
 import Mascot3DBase from '@/components/Mascot3DBase';
 import InputMessageForm from "@/components/mainChat/inputMessage";
-import EditMessageForm from "@/components/mainChat//editMessage";
+import EditMessageForm from "@/components/mainChat/editMessage";
+import FeedBackForm from "@/components/mainChat/FeedBackPopup";
 import { MascotProvider } from "@/components/MascotProvider";
 import MobileSideBar from "@/components/SideBar/MobileSideBar";
 import { toggleChat, fetchAPI, clearCurrentChat } from "../../features/gitChat/gitSlice";
@@ -23,8 +24,11 @@ const MainChatWindow = () => {
     const chatCurrent = useSelector((state) => state.gitChat.chatCurrent)
     const chatHistory=useSelector((state) => state.gitChat.chatHistory)
     const [editingMessageIndex, setEditingMessageIndex] = useState(null);
+    const [feedMessageIndex, setFeedMessageIndex] = useState(null);
+    const [feedback, setFeedback] = useState({}); 
     const [searchQuery, setSearchQuery] = useState("");
     const [openMobileSB, setOpenMobileSB] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     
     const highlightText = (text, query) => {
         if (!query) return text;
@@ -56,6 +60,15 @@ const MainChatWindow = () => {
             target: 'chatHistory'
         }))
     }
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia("(max-width: 640px)");
+        setIsMobile(mediaQuery.matches);
+
+        const handler = (e) => setIsMobile(e.matches);
+        mediaQuery.addListener(handler);
+    }, []);
+    
     
 
     return(
@@ -81,6 +94,12 @@ const MainChatWindow = () => {
                     <MSideBarIcon/>
                 </div>
                 <div className="flex items-center gap-2">
+                    {isMobile ? 
+                        <div>
+                        </div> : 
+                        <div>
+                        </div>
+                    }
                     {/* <Canvas 
                         style={{ width: 60, height: 60, cursor: 'pointer' }}
                         dpr={[1, 2]}
@@ -174,8 +193,29 @@ const MainChatWindow = () => {
                                     <div className="bot-extra">
                                         <div>
                                             <UpdateIcon />
-                                            <LikeIcon />
-                                            <DislikeIcon />
+                                            <LikeIcon 
+                                                active={feedback[i] === "like"}
+                                                onClick={() =>
+                                                setFeedback((prev) => ({
+                                                    ...prev,
+                                                    [i]: prev[i] === "like" ? null : "like"
+                                                }))
+                                                }
+                                            />
+                                            <DislikeIcon
+                                              active={feedback[i] === "dislike"}
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                if (feedback[i] !== "dislike") {
+                                                    setFeedMessageIndex(i);
+                                                }
+                                                setFeedback((prev) => ({
+                                                  ...prev,
+                                                  [i]: prev[i] === "dislike" ? null : "dislike"
+                                                }))
+                                                }
+                                              }
+                                            />
                                         </div>
                                         <div className="flex">
                                             <BookMarkChatIcon />
@@ -195,6 +235,11 @@ const MainChatWindow = () => {
             </div>
             <div className="h-[1px]"></div>
             </div>
+            {feedMessageIndex != null && (
+                <div>
+                    <FeedBackForm resetFeedMessageIndex={() => setFeedMessageIndex(null)}/>
+                </div>
+            )}
         </motion.div>
     )
 }

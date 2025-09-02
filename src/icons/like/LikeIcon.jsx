@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux'
 
-const LikeIcon = ({ onClick }) => {
+const LikeIcon = ({ active, onClick }) => {
   const [hovered, setHovered] = useState(false);
-  const [active, setActive] = useState(false);
 
   const darkMode = useSelector((state)=>state.gitChat.darkMode);
   const hoverStrokeColor = darkMode ? "#EAEEF11A" : "#E1E2E5";
   const activeStrokeColor = darkMode ? "#8C929C" : "#9BA3AF";
 
-  const handleClick = (e) => {
-    setActive(!active);            
+  const handleClick = (e) => {        
     onClick?.(e);               
   };
 

@@ -1,5 +1,5 @@
 import { MascotProvider } from "./MascotProvider";
-import React, { Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Mascot3DBase from './Mascot3DBase';
 import ChatWindow from './ChatWindow';
@@ -9,17 +9,31 @@ import { toggleChat } from "../features/gitChat/gitSlice";
 export default function ChatMascotPlugin() {
   const chatOpen = useSelector((state) => state.gitChat.isOpen);
   const dispatch = useDispatch();
+  const [isMobile, setIsMobile] = useState(false);
+      
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 640px)");
+    setIsMobile(mediaQuery.matches);
+
+    const handler = (e) => setIsMobile(e.matches);
+    mediaQuery.addListener(handler);
+
+  }, []);
 
   return (
     <div 
       className={`${chatOpen ? 'plagin-open-chat' : 'plagin-close-chat'}`}  
     >
-      {/* <Canvas 
-        style={{ width: 1200, height: 1200, cursor: 'pointer' }}
+      {/* {isMobile ? 
+      <div>
+      </div> :
+      <Canvas 
+        style={{ width: 700, height: 700, cursor: 'pointer' }}
         dpr={[1, 2]}
         shadows
         gl={{ antialias: true, physicallyCorrectLights: true }}
-        camera={{ position: [0, 5, 40], fov: 20 }}
+        camera={{ position: [0, 15, 100], fov: 20 }}
+        onClick={() => dispatch(toggleChat())} 
       >
         <MascotProvider>
           <ambientLight intensity={0.3} />
@@ -28,14 +42,14 @@ export default function ChatMascotPlugin() {
           <Suspense fallback={null}>
             {!chatOpen && (
               <Mascot3DBase 
-                onClick={() => dispatch(toggleChat())} 
-                position={[0, -20, 0]} 
-                scale={0.6} 
+                position={[0, -47, 0]} 
+                scale={0.9} 
               />
             )}
           </Suspense>
         </MascotProvider>
-      </Canvas> */}
+      </Canvas>
+      }  */}
 
       {/* Окно чата */}
       {chatOpen && (

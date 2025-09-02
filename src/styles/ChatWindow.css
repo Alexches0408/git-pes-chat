@@ -620,7 +620,6 @@ html {
   padding: 10px 20px;
   border: 1px solid #708AB9;
   border-radius: 12px;
-  margin-left: auto;
   margin-bottom: 12px;
   background-color: transparent;
   outline: none; 
@@ -756,6 +755,28 @@ html {
   .tooltip-container {
     width: 100%;
     justify-content: space-evenly;
+  }
+
+  #feedback-popup {
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    height: auto;
+  }
+
+  .feed-head-main {
+    text-align: left;
+  }
+
+  .feed-buttons-block {
+    height: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .feed-text-area {
+    width: 85%;
+    margin: auto;
   }
 
 }

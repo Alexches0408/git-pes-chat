@@ -67,7 +67,7 @@ const FeedBackForm = ({resetFeedMessageIndex}) => {
             <div id="all-background-for-feed-popup" />
             <div id="feedback-popup" ref={ref}>
                 <div id="feed-head">
-                    <div className='AGtext '>Обратная связь, почему не подошел ответ?</div>
+                    <div className='AGtext feed-head-main'>Обратная связь, почему не подошел ответ?</div>
                     <CloseIcon            
                         onClick={resetFeedMessageIndex}/>
                 </div>
